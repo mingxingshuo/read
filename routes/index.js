@@ -17,7 +17,7 @@ router.get('/read', async (ctx, next) => {
 		let reads = trades.yuedulists
 		for (var i = 0; i < reads.length; i++) {
 			var item = reads[i]
-			await redis_client.sadd(item.tradeNo)
+			await redis_client.sadd('shua_trans_list',item.tradeNo)
 		}
 		can_reads = _.filter(reads,function (read) {
 			return read.status ==603
