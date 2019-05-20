@@ -26,7 +26,7 @@ router.get('/read', async (ctx, next) => {
 	let arr = []
 	for (var index = 0; index < can_reads.length; index++) {
 		let read = can_reads[index]
-		let amount = await redis_client.get('shua_read_tradeNo_'+read.tradeNo)
+		let amount = await redis_client.pfcount('shua_read_tradeNo_uv_'+read.tradeNo)
 		let count = 1;
 		if(read.level==1){
 			count == 3
@@ -106,7 +106,7 @@ async function updateTrade(read){
 
 
 router.get('/amount', async (ctx, next) => {
-	let uv_flag = ctx.query.uv;
+	//let uv_flag = ctx.query.uv;
   	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=get-incomplete-missions&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
     let trades = await rp(url)
 	trades = JSON.parse(trades)
@@ -115,10 +115,10 @@ router.get('/amount', async (ctx, next) => {
 		let read = reads[index]
 		let amount = await redis_client.get('shua_read_tradeNo_'+read.tradeNo);
 		read.amount = amount;
-		if(uv_flag){
-			let uv = await redis_client.pfcount('shua_read_tradeNo_uv_'+read.tradeNo);
-			read.uv = uv;
-		}
+		//if(uv_flag){
+		let uv = await redis_client.pfcount('shua_read_tradeNo_uv_'+read.tradeNo);
+		read.uv = uv;
+		//}
 	}
 	ctx.body = reads
 })
