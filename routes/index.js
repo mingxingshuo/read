@@ -44,6 +44,8 @@ router.get('/read', async (ctx, next) => {
 			for (var i = 0; i < count; i++) {
 				arr.push(read)
 			}
+		}else{
+			updateTrade(read)
 		}
 	}
 
