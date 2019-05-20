@@ -20,9 +20,9 @@ let obj1={
 
 let obj2={
 	tradeNo : "20190520192722213135",
-	amount : 568
+	amount : 571
 }
 
 
-updateTrade(obj1)
+//updateTrade(obj1)
 updateTrade(obj2)
