@@ -9,6 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "async-redis": "^1.1.7",
     "debug": "^2.6.3",
     "koa": "^2.2.0",
     "koa-bodyparser": "^3.2.0",
@@ -19,7 +20,11 @@
     "koa-router": "^7.1.1",
     "koa-static": "^3.0.0",
     "koa-views": "^5.2.1",
-    "pug": "^2.0.0-rc.1"
+    "memcached": "^2.2.2",
+    "pug": "^2.0.0-rc.1",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "underscore": "^1.9.1"
   },
   "devDependencies": {
     "nodemon": "^1.8.1"
