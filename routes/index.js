@@ -16,8 +16,8 @@ router.get('/read', async (ctx, next) => {
 		trades = JSON.parse(trades)
 		let reads = trades.yuedulists
 		for (var i = 0; i < reads.length; i++) {
-			var read = reads[i]
-			await redis_client.sadd(read.tradeNo)
+			var item = reads[i]
+			await redis_client.sadd(item.tradeNo)
 		}
 		can_reads = _.filter(reads,function (read) {
 			return read.status ==603
