@@ -6,7 +6,7 @@ const mem = require('../util/mem')
 const _ = require('underscore')
 
 
-router.get('/', async (ctx, next) => {
+router.get('/read', async (ctx, next) => {
 	let can_reads = await mem.get('shua_read_trads_arr');
 	let uid = getUid(ctx);
 	//console.log('uid--------------------',uid)
