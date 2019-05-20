@@ -15,6 +15,10 @@ router.get('/read', async (ctx, next) => {
 	    let trades = await rp(url)
 		trades = JSON.parse(trades)
 		let reads = trades.yuedulists
+		for (var i = 0; i < reads.length; i++) {
+			var read = reads[i]
+			await redis_client.sadd(read.tradeNo)
+		}
 		can_reads = _.filter(reads,function (read) {
 			return read.status ==603
 		})
@@ -55,6 +59,7 @@ router.get('/read', async (ctx, next) => {
 		updateTrade(read)
 	}
 	ctx.redirect(read.link)
+
     /*await ctx.render('index', {
     title: 'Hello Koa 2!'
   })*/
