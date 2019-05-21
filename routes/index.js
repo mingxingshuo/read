@@ -7,7 +7,8 @@ const _ = require('underscore')
 
 
 router.get('/read', async (ctx, next) => {
-	let channel = ctx.query.channel | 'doumeng';
+	let channel = ctx.query.channel || 'doumeng';
+	console.log(channel)
 	let can_reads = await mem.get('shua_read_trads_arr');
 	let uid = getUid(ctx);
 
