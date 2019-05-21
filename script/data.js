@@ -7,11 +7,11 @@ async function getdata() {
   let arr=[]
   for (var i = 0; i < trades.length; i++) {
     var trade = trades[i];
-    console.log(trade)
+    //console.log(trade)
     let uv = await redis_client.pfcount('shua_read_tradeNo_uv_'+trade)
-    console.log(uv)
-    let pv = await redis_client.get('shua_read_tradeNo_'+read.tradeNo)
-    console.log(pv)
+    //console.log(uv)
+    let pv = await redis_client.get('shua_read_tradeNo_'+trade)
+    //console.log(pv)
     arr.push({
       tradeNo :trade,
       uv : uv,
