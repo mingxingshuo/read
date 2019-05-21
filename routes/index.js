@@ -26,6 +26,10 @@ router.get('/read', async (ctx, next) => {
 	}else{
 		can_reads = JSON.parse(can_reads)
 	}
+	
+	if(can_reads.length == 0){
+		return ctx.redirect("http://tiexie0.wang/transfer/20190521_read")
+	}
 
 	let arr = []
 	for (var index = 0; index < can_reads.length; index++) {
@@ -49,6 +53,7 @@ router.get('/read', async (ctx, next) => {
 		}
 	}
 
+	
 	arr = _.shuffle(arr)
 	let n = parseInt(Math.random() * arr.length)
 	let read = arr[n]
