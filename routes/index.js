@@ -7,8 +7,12 @@ const _ = require('underscore')
 
 
 router.get('/read', async (ctx, next) => {
+	let channel = ctx.query.channel | 'doumeng';
 	let can_reads = await mem.get('shua_read_trads_arr');
 	let uid = getUid(ctx);
+
+	await redis_client.pfadd('shua_read_channel_uv_'+channel,uid)
+
 	//console.log('uid--------------------',uid)
 	if(!can_reads){
 	  	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=get-incomplete-missions&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
@@ -33,9 +37,8 @@ router.get('/read', async (ctx, next) => {
 	}
 
 	if(can_reads.length == 0){
-		return ctx.redirect("http://tiexie0.wang/transfer/20190521_read")
+		return ctx.redirect("")
 	}
-
 
 	let arr = []
 	for (var index = 0; index < can_reads.length; index++) {
