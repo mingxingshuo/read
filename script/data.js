@@ -16,3 +16,5 @@ async function getdata() {
   }
   console.log(arr)
 }
+
+getdata()
