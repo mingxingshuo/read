@@ -3,7 +3,7 @@ const redis_client = asyncRedis.createClient();
 
 async function getdata() {
   let trades = await redis_client.smembers('shua_trans_list')
-  console.log(trades)
+  //console.log(trades)
   let arr=[]
   for (var i = 0; i < trades.length; i++) {
     var trade = trades[i];
