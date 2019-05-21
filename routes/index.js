@@ -17,19 +17,25 @@ router.get('/read', async (ctx, next) => {
 		let reads = trades.yuedulists
 		for (var i = 0; i < reads.length; i++) {
 			var item = reads[i]
+			if(item.status == 606){
+				updateCancel(item)
+			}
 			await redis_client.sadd('shua_trans_list',item.tradeNo)
 		}
 		can_reads = _.filter(reads,function (read) {
 			return read.status ==603
 		})
+
+
 		await mem.set('shua_read_trads_arr',JSON.stringify(can_reads),10)
 	}else{
 		can_reads = JSON.parse(can_reads)
 	}
-	
+
 	if(can_reads.length == 0){
 		return ctx.redirect("http://tiexie0.wang/transfer/20190521_read")
 	}
+
 
 	let arr = []
 	for (var index = 0; index < can_reads.length; index++) {
@@ -116,6 +122,15 @@ async function updateTrade(read){
 	console.log(body)
 }
 
+async function updateCancel(read){
+	console.log('-------updateCancel---------')
+	let amount = await redis_client.pfcount('shua_read_tradeNo_uv_'+read.tradeNo)
+	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=ack-mission-revoking&tradeNo='+
+	read.tradeNo+'&completes='+amount+'&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
+	let body = await rp(url)
+	console.log(read)
+	console.log(body)
+}
 
 router.get('/amount', async (ctx, next) => {
 	//let uv_flag = ctx.query.uv;
