@@ -143,7 +143,7 @@ router.get('/amount', async (ctx, next) => {
 	trades = JSON.parse(trades)
 	let reads = trades.yuedulists
 	reads = _.filter(reads,function (read) {
-			return read.level ==2
+			return read.level ==1
 	})
 	for (var index = 0; index < reads.length; index++) {
 		let read = reads[index]
