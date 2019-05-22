@@ -167,7 +167,7 @@ router.get('/data', async (ctx, next) => {
   for (var i = 0; i < trades.length; i++) {
   	var trade = trades[i];
   	let uv = await redis_client.pfcount('shua_read_tradeNo_uv_'+trade)
-  	let pv = await redis_client.get('shua_read_tradeNo_'+read.tradeNo)
+  	let pv = await redis_client.get('shua_read_tradeNo_'+trade)
   	arr.push({
   		tradeNo :trade,
   		uv : uv,
