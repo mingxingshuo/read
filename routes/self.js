@@ -5,14 +5,15 @@ const rp = require('request-promise');
 const mem = require('../util/mem')
 const _ = require('underscore')
 
+router.prefix('/self')
 
 router.get('/read', async (ctx, next) => {
-	let channel = ctx.query.channel || 'doumeng';
+	let channel = ctx.query.channel || 'slef';
 	console.log(channel)
-	let can_reads = await mem.get('shua_read_trads_arr');
+	let can_reads = await mem.get('self_shua_read_trads_arr');
 	let uid = getUid(ctx);
 
-	await redis_client.pfadd('shua_read_channel_uv_'+channel,uid)
+	await redis_client.pfadd('self_shua_read_channel_uv_'+channel,uid)
 
 	//console.log('uid--------------------',uid)
 	if(!can_reads){
@@ -22,29 +23,27 @@ router.get('/read', async (ctx, next) => {
 		let reads = trades.yuedulists
 		for (var i = 0; i < reads.length; i++) {
 			var item = reads[i]
-			if(item.level ==1 && item.status == 606){
+			if(item.level ==2 && item.status == 606){
 				updateCancel(item)
 			}
-			await redis_client.sadd('shua_trans_list',item.tradeNo)
+			await redis_client.sadd('self_shua_trans_list',item.tradeNo)
 		}
 		can_reads = _.filter(reads,function (read) {
-			return read.status ==603 && read.level ==1
+			return read.status ==603 && read.level ==2
 		})
-
-
-		await mem.set('shua_read_trads_arr',JSON.stringify(can_reads),10)
+		await mem.set('self_shua_read_trads_arr',JSON.stringify(can_reads),10)
 	}else{
 		can_reads = JSON.parse(can_reads)
 	}
 
 	if(can_reads.length == 0){
-		return ctx.redirect("http://tiexie0.wang/transfer/20190522_read")
+		return ctx.redirect("")
 	}
 
 	let arr = []
 	for (var index = 0; index < can_reads.length; index++) {
 		let read = can_reads[index]
-		let amount = await redis_client.pfcount('shua_read_tradeNo_uv_'+read.tradeNo)
+		let amount = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo)
 		let count = 1;
 		if(read.level==1){
 			count == 3
@@ -68,9 +67,9 @@ router.get('/read', async (ctx, next) => {
 	let n = parseInt(Math.random() * arr.length)
 	let read = arr[n]
 	read.amount ++;
-	await redis_client.incr('shua_read_tradeNo_'+read.tradeNo)
+	await redis_client.incr('self_shua_read_tradeNo_'+read.tradeNo)
 
-	await redis_client.pfadd('shua_read_tradeNo_uv_'+read.tradeNo,uid)
+	await redis_client.pfadd('self_shua_read_tradeNo_uv_'+read.tradeNo,uid)
 
 	if(read.amount%100==0){
 		updateTrade(read)
@@ -83,11 +82,11 @@ router.get('/read', async (ctx, next) => {
 })
 
 function getUid(ctx){
-	let uid = ctx.cookies.get('shua_read_uu_b');
+	let uid = ctx.cookies.get('self_shua_read_uu_b');
 	if(!uid){
 		uid = randomWord(false,32)
 		ctx.cookies.set(
-            'shua_read_uu_b',uid,{
+            'self_shua_read_uu_b',uid,{
                 domain: ctx.hostname,
                 path:'/',       // 写cookie所在的路径
                 maxAge: 100*12*30*24*60*60*1000,   // cookie有效时长
@@ -147,10 +146,10 @@ router.get('/amount', async (ctx, next) => {
 	})
 	for (var index = 0; index < reads.length; index++) {
 		let read = reads[index]
-		let amount = await redis_client.get('shua_read_tradeNo_'+read.tradeNo);
+		let amount = await redis_client.get('self_shua_read_tradeNo_'+read.tradeNo);
 		read.amount = amount;
 		//if(uv_flag){
-		let uv = await redis_client.pfcount('shua_read_tradeNo_uv_'+read.tradeNo);
+		let uv = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo);
 		read.uv = uv;
 		//}
 	}
@@ -158,12 +157,12 @@ router.get('/amount', async (ctx, next) => {
 })
 
 router.get('/data', async (ctx, next) => {
-  let trades = await redis_client.smembers('shua_trans_list')
+  let trades = await redis_client.smembers('self_shua_trans_list')
   let arr=[]
   for (var i = 0; i < trades.length; i++) {
   	var trade = trades[i];
-  	let uv = await redis_client.pfcount('shua_read_tradeNo_uv_'+trade)
-  	let pv = await redis_client.get('shua_read_tradeNo_'+read.tradeNo)
+  	let uv = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+trade)
+  	let pv = await redis_client.get('self_shua_read_tradeNo_'+read.tradeNo)
   	arr.push({
   		tradeNo :trade,
   		uv : uv,
