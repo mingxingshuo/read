@@ -163,6 +163,7 @@ router.get('/amount', async (ctx, next) => {
 router.get('/data', async (ctx, next) => {
   let trades = await redis_client.smembers('self_shua_trans_list')
   let arr=[]
+  let total = 0;
   for (var i = 0; i < trades.length; i++) {
   	var trade = trades[i];
   	let uv = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+trade)
@@ -172,8 +173,10 @@ router.get('/data', async (ctx, next) => {
   		uv : uv,
   		pv : pv
   	})
+  	total += uv;
+
   }
-  ctx.body = arr
+  ctx.body = {arr:arr,total:total}
 })
 
 module.exports = router
