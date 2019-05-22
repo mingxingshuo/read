@@ -47,12 +47,16 @@ router.get('/read', async (ctx, next) => {
 		let amount = await redis_client.pfcount('shua_read_tradeNo_uv_'+read.tradeNo)
 		let count = 1;
 		if(read.level==1){
-			count == 3
+			count = 3
 		}else if(read.level==2){
-			count == 2
+			count = 2
 		}else if(read.level==3){
-			count == 1
+			count = 1
 		}
+		if(read.total>20000){
+			count = 5
+		}
+		
 		read.amount = amount;
 		if(amount < read.total){
 			for (var i = 0; i < count; i++) {
