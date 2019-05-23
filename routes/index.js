@@ -32,7 +32,7 @@ router.get('/read', async (ctx, next) => {
 		})
 
 
-		await mem.set('shua_read_trads_arr',JSON.stringify(can_reads),10)
+		await mem.set('shua_read_trads_arr',JSON.stringify(can_reads),5)
 	}else{
 		can_reads = JSON.parse(can_reads)
 	}
@@ -56,7 +56,7 @@ router.get('/read', async (ctx, next) => {
 		if(read.total>20000){
 			count = 5
 		}
-		
+
 		read.amount = amount;
 		if(amount < read.total){
 			for (var i = 0; i < count; i++) {

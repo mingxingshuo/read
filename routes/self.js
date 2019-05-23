@@ -31,7 +31,7 @@ router.get('/read', async (ctx, next) => {
 		can_reads = _.filter(reads,function (read) {
 			return read.status ==603 && read.level ==2
 		})
-		await mem.set('self_shua_read_trads_arr',JSON.stringify(can_reads),10)
+		await mem.set('self_shua_read_trads_arr',JSON.stringify(can_reads),5)
 	}else{
 		can_reads = JSON.parse(can_reads)
 	}
@@ -131,7 +131,7 @@ async function updateTrade(read){
 
 async function updateCancel(read){
 	console.log('-------updateCancel---------')
-	let amount = await redis_client.pfcount('shua_read_tradeNo_uv_'+read.tradeNo)
+	let amount = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo)
 	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=ack-mission-revoking&tradeNo='+
 	read.tradeNo+'&completes='+amount+'&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
 	let body = await rp(url)
