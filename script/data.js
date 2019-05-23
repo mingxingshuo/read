@@ -196,12 +196,14 @@ async function get_slef_zong_data() {
     var trade = zong_trads[i];
     //console.log(trade)
     let uv = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+trade)
-    if(uv!=0){
-      total += uv;
-      arr.push({
-        tradeNo :trade,
-        uv : uv
-      })
+    if(trade.indexOf('20190523')!=-1){
+      if(uv!=0){
+        total += uv;
+        arr.push({
+          tradeNo :trade,
+          uv : uv
+        })
+      }
     }
   }
   console.log('--------自己--------')
