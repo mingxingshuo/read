@@ -53,7 +53,7 @@ router.get('/read', async (ctx, next) => {
 		}else if(read.level==3){
 			count = 1
 		}
-		if(read.total<2000){
+		if(read.total<4000){
 			count = 5
 		}
 		read.amount = amount;
