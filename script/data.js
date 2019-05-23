@@ -122,7 +122,7 @@ async function get_doumeng_data() {
   let arr=[]
   for (var i = 0; i < trades.length; i++) {
     var trade = trades[i];
-    console.log(trade)
+    //console.log(trade)
     let uv = await redis_client.pfcount('shua_read_tradeNo_uv_'+trade)
     if(uv!=0){
       total += uv;
@@ -145,7 +145,7 @@ async function get_self_data() {
   let arr=[]
   for (var i = 0; i < trades.length; i++) {
     var trade = trades[i];
-    console.log(trade)
+    //console.log(trade)
     let uv = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+trade)
     if(uv!=0){
       total += uv;
@@ -162,6 +162,33 @@ async function get_self_data() {
   })
 }
 
-get_doumeng_data()
 
-get_self_data()
+async function get_doumeng_zong_data() {
+  let total = 0;
+  let arr=[]
+  let zong_trads = await redis_client.smembers('shua_trans_list')
+  for (var i = 0; i < zong_trads.length; i++) {
+    var trade = zong_trads[i];
+    //console.log(trade)
+    let uv = await redis_client.pfcount('shua_read_tradeNo_uv_'+trade)
+    if(uv!=0){
+      total += uv;
+      arr.push({
+        tradeNo :trade,
+        uv : uv
+      })
+    }
+  }
+  console.log('--------豆盟--------')
+  console.log({
+    total : total,
+    arr : arr
+  })
+}
+
+
+//get_doumeng_data()
+
+//get_self_data()
+
+get_doumeng_zong_data()
