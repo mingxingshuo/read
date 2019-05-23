@@ -161,3 +161,7 @@ async function get_self_data() {
     arr : arr
   })
 }
+
+get_doumeng_data()
+
+get_self_data()
