@@ -38,7 +38,7 @@ router.get('/read', async (ctx, next) => {
 	}
 
 	if(can_reads.length == 0){
-		return ctx.redirect("https://interaction.clotfun.online/gameHtml?appkey=ce645f20eb0166e7c6519e950c678dfb&adSpaceKey=497af8addedcde85f67fc3f9b2214820&from=H5&1=1")
+		return ctx.redirect("http://tiexie0.wang/transfer/20190523_read_2")
 	}
 
 	let arr = []
