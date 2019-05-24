@@ -171,12 +171,14 @@ async function get_doumeng_zong_data() {
     var trade = zong_trads[i];
     //console.log(trade)
     let uv = await redis_client.pfcount('shua_read_tradeNo_uv_'+trade)
-    if(uv!=0){
-      total += uv;
-      arr.push({
-        tradeNo :trade,
-        uv : uv
-      })
+    if(trade.indexOf('20190523')!=-1){
+      if(uv!=0){
+        total += uv;
+        arr.push({
+          tradeNo :trade,
+          uv : uv
+        })
+      }
     }
   }
   console.log('--------豆盟--------')
@@ -212,8 +214,11 @@ async function get_slef_zong_data() {
     arr : arr
   })
 }
+
 //get_doumeng_data()
 
 //get_self_data()
 
 get_slef_zong_data()
+
+get_doumeng_zong_data()
