@@ -37,7 +37,7 @@ router.get('/read', async (ctx, next) => {
 	}
 
 	if(can_reads.length == 0){
-		return ctx.redirect("http://tiexie0.wang/transfer/20190522_read_1")
+		return ctx.redirect("http://tiexie0.wang/transfer/20190523_read_2")
 	}
 
 	let arr = []
