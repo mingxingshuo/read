@@ -4,6 +4,7 @@ const redis_client = asyncRedis.createClient();
 const rp = require('request-promise');
 const mem = require('../util/mem')
 const _ = require('underscore')
+const date_util = require('../util/date')
 
 router.prefix('/self')
 
@@ -13,7 +14,8 @@ router.get('/read', async (ctx, next) => {
 	let can_reads = await mem.get('self_shua_read_trads_arr');
 	let uid = getUid(ctx);
 
-	await redis_client.pfadd('self_shua_read_channel_uv_'+channel,uid)
+	let str_date = date_util('yyyyMMdd',new Date());
+	await redis_client.pfadd('self_shua_read_channel_uv_'+channel+'_'+str_date,uid)
 
 	//console.log('uid--------------------',uid)
 	if(!can_reads){
