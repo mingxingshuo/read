@@ -14,7 +14,7 @@ router.get('/read', async (ctx, next) => {
 	let can_reads = await mem.get('wowo_shua_read_trads_arr');
 	let uid = getUid(ctx);
 
-	let str_date = date_util('yyyyMMdd',new Date());
+	let str_date = date_util.dateFtt('yyyyMMdd',new Date());
 	await redis_client.pfadd('wowo_shua_read_channel_uv_'+channel+'_'+date,uid)
 
 	//console.log('uid--------------------',uid)
