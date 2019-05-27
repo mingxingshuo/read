@@ -221,8 +221,4 @@ async function get_slef_zong_data() {
 
 //get_slef_zong_data()
 
-get_doumeng_zong_data('20190522')
-get_doumeng_zong_data('20190523')
-get_doumeng_zong_data('20190524')
-get_doumeng_zong_data('20190525')
-get_doumeng_zong_data('20190526')
+get_doumeng_zong_data('20190527')
