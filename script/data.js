@@ -163,15 +163,15 @@ async function get_self_data() {
 }
 
 
-async function get_doumeng_zong_data() {
+async function get_doumeng_zong_data(param) {
   let total = 0;
   let arr=[]
   let zong_trads = await redis_client.smembers('shua_trans_list')
   for (var i = 0; i < zong_trads.length; i++) {
     var trade = zong_trads[i];
     //console.log(trade)
-    let uv = await redis_client.pfcount('shua_read_tradeNo_uv_'+trade)
-    if(trade.indexOf('20190523')!=-1){
+    if(trade.indexOf(param)!=-1){
+      let uv = await redis_client.pfcount('shua_read_tradeNo_uv_'+trade)
       if(uv!=0){
         total += uv;
         arr.push({
@@ -219,6 +219,10 @@ async function get_slef_zong_data() {
 
 //get_self_data()
 
-get_slef_zong_data()
+//get_slef_zong_data()
 
-//get_doumeng_zong_data()
+get_doumeng_zong_data('20190522')
+get_doumeng_zong_data('20190523')
+get_doumeng_zong_data('20190524')
+get_doumeng_zong_data('20190525')
+get_doumeng_zong_data('20190526')
