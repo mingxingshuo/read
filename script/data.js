@@ -221,4 +221,4 @@ async function get_slef_zong_data() {
 
 get_slef_zong_data()
 
-get_doumeng_zong_data()
+//get_doumeng_zong_data()
