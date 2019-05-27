@@ -174,17 +174,17 @@ async function get_doumeng_zong_data(param) {
       let uv = await redis_client.pfcount('shua_read_tradeNo_uv_'+trade)
       if(uv!=0){
         total += uv;
-        arr.push({
+        /*arr.push({
           tradeNo :trade,
           uv : uv
-        })
+        })*/
       }
     }
   }
-  console.log('--------豆盟--------')
+  console.log('--------豆盟--------',param)
   console.log({
     total : total,
-    arr : arr
+    //arr : arr
   })
 }
 
