@@ -9,7 +9,6 @@ var debug = require('debug')('demo:server');
 var http = require('http');
 
 var self_cancel = require('../script/self_cancel')
-var doumeng_cancel = require('../script/doumeng_cancel')
 /**
  * Get port from environment and store in Express.
  */

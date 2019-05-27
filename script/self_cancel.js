@@ -10,7 +10,7 @@ async function req_trads(){
 	let reads = trades.yuedulists
 	for (var i = 0; i < reads.length; i++) {
 		var item = reads[i]
-		if(item.level ==2 && item.status == 606){
+		if(item.status == 606){
 			updateCancel(item)
 		}
 	}
@@ -18,7 +18,14 @@ async function req_trads(){
 
 async function updateCancel(read){
 	console.log('-------updateCancel---------')
-	let amount = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo)
+	let amount;
+	if(read.level==1){
+		let amount = await redis_client.pfcount('shua_read_tradeNo_uv_'+read.tradeNo)
+	}else if(read.level==2){
+		let amount = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo)
+	}else if(read.level==3){
+		let amount = await redis_client.pfcount('wowo_shua_read_channel_uv_'+read.tradeNo)
+	}
 	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=ack-mission-revoking&tradeNo='+
 	read.tradeNo+'&completes='+amount+'&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
 	let body = await rp(url)
