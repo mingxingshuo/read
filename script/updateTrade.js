@@ -15,7 +15,7 @@ async function updateTrade(read){
 
 let obj1={
 	tradeNo : "20190528172500978029",
-	amount : 35000
+	amount : 35170
 }
 
 let obj2={
