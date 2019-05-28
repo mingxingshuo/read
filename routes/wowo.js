@@ -26,7 +26,7 @@ router.get('/read', async (ctx, next) => {
 		let reads = trades.yuedulists
 		for (var i = 0; i < reads.length; i++) {
 			var item = reads[i]
-			if((read.level ==2 || read.level ==3 )&& item.status == 606){
+			if((item.level ==2 || item.level ==3 )&& item.status == 606){
 				updateCancel(item)
 			}
 			await redis_client.sadd('wowo_shua_trans_list',item.tradeNo)
