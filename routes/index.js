@@ -8,7 +8,7 @@ const date_util = require('../util/date')
 
 router.get('/read', async (ctx, next) => {
 	let channel = ctx.query.channel || 'doumeng';
-	console.log(channel)
+	//console.log(channel)
 	let can_reads = await mem.get('shua_read_trads_arr');
 	let uid = getUid(ctx);
 

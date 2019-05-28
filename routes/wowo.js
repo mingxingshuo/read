@@ -46,7 +46,7 @@ router.get('/read', async (ctx, next) => {
 	let arr = []
 	for (var index = 0; index < can_reads.length; index++) {
 		let read = can_reads[index]
-		let amount = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo)
+		let amount = await redis_client.pfcount('wowo_shua_read_tradeNo_uv_'+read.tradeNo)
 		let count = 0;
 
 		if(index==0){
@@ -72,9 +72,9 @@ router.get('/read', async (ctx, next) => {
 	let n = parseInt(Math.random() * arr.length)
 	let read = arr[n]
 	read.amount ++;
-	await redis_client.incr('self_shua_read_tradeNo_'+read.tradeNo)
+	await redis_client.incr('wowo_shua_read_tradeNo_'+read.tradeNo)
 
-	await redis_client.pfadd('self_shua_read_tradeNo_uv_'+read.tradeNo,uid)
+	await redis_client.pfadd('wowo_shua_read_tradeNo_uv_'+read.tradeNo,uid)
 
 	if(read.amount%100==0){
 		updateTrade(read)
@@ -132,7 +132,7 @@ async function updateTrade(read){
 
 async function updateCancel(read){
 	console.log('-------updateCancel---------')
-	let amount = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo)
+	let amount = await redis_client.pfcount('wowo_shua_read_tradeNo_uv_'+read.tradeNo)
 	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=ack-mission-revoking&tradeNo='+
 	read.tradeNo+'&completes='+amount+'&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
 	let body = await rp(url)
@@ -151,10 +151,10 @@ router.get('/amount', async (ctx, next) => {
 	})
 	for (var index = 0; index < reads.length; index++) {
 		let read = reads[index]
-		let amount = await redis_client.get('self_shua_read_tradeNo_'+read.tradeNo);
+		let amount = await redis_client.get('wowo_shua_read_tradeNo_'+read.tradeNo);
 		read.amount = amount;
 		//if(uv_flag){
-		let uv = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo);
+		let uv = await redis_client.pfcount('wowo_shua_read_tradeNo_uv_'+read.tradeNo);
 		read.uv = uv;
 		//}
 	}
@@ -167,8 +167,8 @@ router.get('/data', async (ctx, next) => {
   let total = 0;
   for (var i = 0; i < trades.length; i++) {
   	var trade = trades[i];
-  	let uv = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+trade)
-  	let pv = await redis_client.get('self_shua_read_tradeNo_'+trade)
+  	let uv = await redis_client.pfcount('wowo_shua_read_tradeNo_uv_'+trade)
+  	let pv = await redis_client.get('wowo_shua_read_tradeNo_'+trade)
   	arr.push({
   		tradeNo :trade,
   		uv : uv,
