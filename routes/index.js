@@ -45,7 +45,7 @@ router.get('/read', async (ctx, next) => {
 	let arr = []
 	for (var index = 0; index < can_reads.length; index++) {
 		let read = can_reads[index]
-		let amount = await redis_client.pfcount('shua_read_tradeNo_uv_'+read.tradeNo)
+		
 		let count = 0;
 
 		if(index==0){
@@ -56,28 +56,30 @@ router.get('/read', async (ctx, next) => {
 			count = 1
 		}
 
-		read.amount = amount;
-		if(amount < read.total){
-			for (var i = 0; i < count; i++) {
-				arr.push(read)
-			}
-		}else{
-			updateTrade(read)
+		for (var i = 0; i < count; i++) {
+			arr.push(read)
 		}
+		
 	}
 
 	
 	arr = _.shuffle(arr)
 	let n = parseInt(Math.random() * arr.length)
 	let read = arr[n]
+	let amount = await redis_client.pfcount('shua_read_tradeNo_uv_'+read.tradeNo)
+	read.amount = amount;
 	read.amount ++;
+
 	await redis_client.incr('shua_read_tradeNo_'+read.tradeNo)
 
 	await redis_client.pfadd('shua_read_tradeNo_uv_'+read.tradeNo,uid)
 
 	if(read.amount%100==0){
 		updateTrade(read)
+	}else if(read.amount >= read.total){
+		updateTrade(read)
 	}
+
 	ctx.redirect(read.link)
 
     /*await ctx.render('index', {
