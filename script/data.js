@@ -193,12 +193,12 @@ async function get_doumeng_zong_data(param) {
 async function get_slef_zong_data() {
   let total = 0;
   let arr=[]
-  let zong_trads = await redis_client.smembers('self_shua_trans_list')
+  let zong_trads = await redis_client.smembers('wowo_shua_trans_list')
   for (var i = 0; i < zong_trads.length; i++) {
     var trade = zong_trads[i];
     //console.log(trade)
     let uv = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+trade)
-    if(trade.indexOf('20190527')!=-1){
+    if(trade.indexOf('20190529')!=-1){
       if(uv!=0){
         total += uv;
         arr.push({
@@ -211,7 +211,7 @@ async function get_slef_zong_data() {
   console.log('--------自己--------')
   console.log({
     total : total,
-    arr : arr
+    //arr : arr
   })
 }
 
