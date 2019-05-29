@@ -25,13 +25,13 @@ router.get('/read', async (ctx, next) => {
 		let reads = trades.yuedulists
 		for (var i = 0; i < reads.length; i++) {
 			var item = reads[i]
-			if( (item.level ==2 || item.level ==3 ) && item.status == 606){
+			if( (item.level ==2 ) && item.status == 606){ // || item.level ==3
 				updateCancel(item)
 			}
 			await redis_client.sadd('self_shua_trans_list',item.tradeNo)
 		}
 		can_reads = _.filter(reads,function (read) {
-			return read.status ==603 && (read.level ==2 || read.level ==3 )
+			return read.status ==603 && (read.level ==2 ) // || read.level ==3 
 		})
 		await mem.set('self_shua_read_trads_arr',JSON.stringify(can_reads),5)
 	}else{
@@ -46,11 +46,6 @@ router.get('/read', async (ctx, next) => {
 	for (var index = 0; index < can_reads.length; index++) {
 		let read = can_reads[index]
 		let amount = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo)
-		
-		if(read.level==3){
-			amount = await redis_client.pfcount('wowo_shua_read_tradeNo_uv_'+read.tradeNo)
-		}
-
 		let count = 0;
 
 		if(index==0){
@@ -76,13 +71,10 @@ router.get('/read', async (ctx, next) => {
 	let n = parseInt(Math.random() * arr.length)
 	let read = arr[n]
 	read.amount ++;
-	if(read.level==3){
-		await redis_client.incr('wowo_shua_read_tradeNo_'+read.tradeNo)
-		await redis_client.pfadd('wowo_shua_read_tradeNo_uv_'+read.tradeNo,uid)
-	}else{
-		await redis_client.incr('self_shua_read_tradeNo_'+read.tradeNo)
-		await redis_client.pfadd('self_shua_read_tradeNo_uv_'+read.tradeNo,uid)
-	}
+	
+	await redis_client.incr('self_shua_read_tradeNo_'+read.tradeNo)
+	await redis_client.pfadd('self_shua_read_tradeNo_uv_'+read.tradeNo,uid)
+	
 
 
 	if(read.amount%100==0){
@@ -142,9 +134,6 @@ async function updateTrade(read){
 async function updateCancel(read){
 	console.log('-------updateCancel---------')
 	let amount = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo)
-	if(read.level==3){
-		amount = await redis_client.pfcount('wowo_shua_read_tradeNo_uv_'+read.tradeNo)
-	}
 	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=ack-mission-revoking&tradeNo='+
 	read.tradeNo+'&completes='+amount+'&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
 	let body = await rp(url)
@@ -159,7 +148,7 @@ router.get('/amount', async (ctx, next) => {
 	trades = JSON.parse(trades)
 	let reads = trades.yuedulists
 	reads = _.filter(reads,function (read) {
-			return (read.level ==2 || read.level ==3 )
+			return (read.level ==2 ) // read.level ==3
 	})
 	for (var index = 0; index < reads.length; index++) {
 		let read = reads[index]
@@ -167,9 +156,6 @@ router.get('/amount', async (ctx, next) => {
 		read.amount = amount;
 		//if(uv_flag){
 		let uv = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo);
-		if(read.level==3){
-			uv = await redis_client.pfcount('wowo_shua_read_tradeNo_uv_'+read.tradeNo)
-		}
 		read.uv = uv;
 		//}
 	}
