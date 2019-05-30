@@ -103,7 +103,7 @@ router.get('/read', async (ctx, next) => {
                 overwrite:false  // 是否允许重写
             }
         );
-	
+
 	ctx.redirect(read.link)
 
     /*await ctx.render('index', {
@@ -112,7 +112,36 @@ router.get('/read', async (ctx, next) => {
 })
 
 router.get('/link', async (ctx, next) => {
-	await ctx.render('read/doumeng')
+	let can_reads = await mem.get('shua_read_trads_arr');
+	if(!can_reads){
+	  	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=get-incomplete-missions&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
+	    let trades = await rp(url)
+		trades = JSON.parse(trades)
+		let reads = trades.yuedulists
+		for (var i = 0; i < reads.length; i++) {
+			var item = reads[i]
+			if( (item.level ==2 ) && item.status == 606){ // || item.level ==3
+				updateCancel(item)
+			}
+			await redis_client.sadd('shua_trans_list',item.tradeNo)
+		}
+		can_reads = _.filter(reads,function (read) {
+			return read.status ==603 && (read.level ==2 ) // || read.level ==3 
+		})
+		await mem.set('shua_read_trads_arr',JSON.stringify(can_reads),5)
+	}else{
+		can_reads = JSON.parse(can_reads)
+	}
+	let old_reads = ctx.cookies.get('shua_read_old_list');
+	if(old_reads){
+		old_reads = old_reads.split(',')	
+	}else{
+		old_reads = []
+	}
+	can_reads = _.filter(can_reads,function (read) {
+			return old_reads.indexOf(read.tradeNo) == -1
+	})
+	await ctx.render('read/doumeng',{zong:can_reads.length})
 })
 
 router.get('/backlink', async (ctx, next) => {
