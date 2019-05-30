@@ -42,7 +42,9 @@
 			setCookie('self_count',"0")
 			close_flag =true;
 			if(typeof WeixinJSBridge != "undefined"){
-				WeixinJSBridge.call('closeWindow');
+				setTimeout(function(){
+					WeixinJSBridge.call('closeWindow');
+				},300)
 			}else{
 				history.back()
 			}
