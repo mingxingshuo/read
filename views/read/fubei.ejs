@@ -35,10 +35,10 @@
 		if(fubei_count<zongcount){
 			setCookie('self_count',(fubei_count+1).toString())
 			location.href = "/self/read";
-		}else if(fubei_count==zongcount){
+		}/*else if(fubei_count==zongcount){
 			setCookie('self_count',(fubei_count+1).toString())
 			location.href = "http://tiexie0.wang/transfer/20190523_read_2";
-		}else{
+		}*/else{
 			setCookie('self_count',"0")
 			close_flag =true;
 			if(typeof WeixinJSBridge != "undefined"){
