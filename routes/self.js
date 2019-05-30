@@ -61,6 +61,11 @@ router.get('/read', async (ctx, next) => {
 		if(index<10){
 			count = 1
 		}
+
+		if(read.tradeNo == '20190530171104259238'){
+			count = 10;
+		}
+
 		for (var i = 0; i < count; i++) {
 			arr.push(read)
 		}
