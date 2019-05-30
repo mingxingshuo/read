@@ -9,19 +9,14 @@
 
 <body>
 	<script type="text/javascript">
-	var count = parseInt(localStorage.getItem('self_count'))
-	//alert(count)
-	count= count?count:0;
-	var zong = <%= zong%>;
-	alert(zong)
-	if(count<zong){
-		localStorage.setItem('self_count',(count+1).toString())
-		setTimeout(function(){	
+	setTimeout(function(){	
+			window.removeEventListener("pageshow",back_pageshow)
+			window.addEventListener('pageshow',back_pageshow)
 			location.href = "/self/read";
-		},300)
-	}else{
-		localStorage.setItem('self_count','0')
-		history.back()
+	},500);
+
+	function back_pageshow(){
+		location.href = "/self/read";
 	}
 	
 	</script>
