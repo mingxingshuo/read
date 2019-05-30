@@ -234,7 +234,7 @@ async function get_wowo_zong_data() {
       }
     }
   }
-  console.log('--------自己--------')
+  console.log('--------窝窝--------')
   console.log({
     total : total,
     //arr : arr
