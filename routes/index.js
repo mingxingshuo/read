@@ -15,95 +15,12 @@ router.get('/read', async (ctx, next) => {
 	let str_date = date_util.dateFtt('yyyyMMdd',new Date());
 	await redis_client.pfadd('shua_read_channel_uv_'+channel+'_'+str_date,uid)
 
-	//console.log('uid--------------------',uid)
-	if(!can_reads){
-	  	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=get-incomplete-missions&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
-	    let trades = await rp(url)
-		trades = JSON.parse(trades)
-		let reads = trades.yuedulists
-		for (var i = 0; i < reads.length; i++) {
-			var item = reads[i]
-			if(item.level ==1 && item.status == 606){
-				updateCancel(item)
-			}
-			await redis_client.sadd('shua_trans_list',item.tradeNo)
-		}
-		can_reads = _.filter(reads,function (read) {
-			return read.status ==603 && read.level ==1
-		})
-
-
-		await mem.set('shua_read_trads_arr',JSON.stringify(can_reads),5)
-	}else{
-		can_reads = JSON.parse(can_reads)
-	}
-
-	if(can_reads.length == 0){
-		return ctx.redirect("https://interaction.clotfun.online/gameHtml?appkey=ce645f20eb0166e7c6519e950c678dfb&adSpaceKey=497af8addedcde85f67fc3f9b2214820&from=H5&1=1")
-	}
-
-	let arr = []
-	for (var index = 0; index < can_reads.length; index++) {
-		let read = can_reads[index]
-		
-		let count = 0;
-
-		if(index==0){
-			count = 10
-		}else if(index<5){
-			count = 5
-		}else if(index<10){
-			count = 1
-		}
-
-		for (var i = 0; i < count; i++) {
-			arr.push(read)
-		}
-		
-	}
-
-	
-	arr = _.shuffle(arr)
-	let n = parseInt(Math.random() * arr.length)
-	let read = arr[n]
-	let amount = await redis_client.pfcount('shua_read_tradeNo_uv_'+read.tradeNo)
-	read.amount = amount;
-	read.amount ++;
-
-	await redis_client.incr('shua_read_tradeNo_'+read.tradeNo)
-
-	await redis_client.pfadd('shua_read_tradeNo_uv_'+read.tradeNo,uid)
-
-	if(read.amount%100==0){
-		updateTrade(read)
-	}else if(read.amount >= read.total){
-		updateTrade(read)
-	}
-
-	ctx.redirect(read.link)
-
-    /*await ctx.render('index', {
-    title: 'Hello Koa 2!'
-  })*/
-})
-
-router.get('/link', async (ctx, next) => {
-	let channel = ctx.query.channel || 'doumeng';
-	//console.log(channel)
-	let can_reads = await mem.get('shua_read_trads_arr');
-	let uid = getUid(ctx);
-
-	let str_date = date_util.dateFtt('yyyyMMdd',new Date());
-	await redis_client.pfadd('shua_read_channel_uv_'+channel+'_'+str_date,uid)
-	await redis_client.incr('shua_read_channel_pv_'+channel+'_'+str_date)
-
 	let old_reads = ctx.cookies.get('shua_read_old_list');
 	if(old_reads){
 		old_reads = old_reads.split(',')	
 	}else{
 		old_reads = []
 	}
-	
 
 	//console.log('uid--------------------',uid)
 	if(!can_reads){
@@ -129,9 +46,8 @@ router.get('/link', async (ctx, next) => {
 	}
 
 	can_reads = _.filter(can_reads,function (read) {
-			return old_reads.indexOf(read.tradeNo)==-1
+		return old_reads.indexOf(read.tradeNo)==-1
 	})
-	//can_reads = _.difference(can_reads,old_reads)
 
 	if(can_reads.length == 0){
 		return ctx.redirect("https://interaction.clotfun.online/gameHtml?appkey=ce645f20eb0166e7c6519e950c678dfb&adSpaceKey=497af8addedcde85f67fc3f9b2214820&from=H5&1=1")
@@ -153,14 +69,14 @@ router.get('/link', async (ctx, next) => {
 
 		for (var i = 0; i < count; i++) {
 			arr.push(read)
-		}	
+		}
+		
 	}
 
 	
 	arr = _.shuffle(arr)
 	let n = parseInt(Math.random() * arr.length)
 	let read = arr[n]
-
 	let amount = await redis_client.pfcount('shua_read_tradeNo_uv_'+read.tradeNo)
 	read.amount = amount;
 	read.amount ++;
@@ -175,6 +91,7 @@ router.get('/link', async (ctx, next) => {
 		updateTrade(read)
 	}
 
+
 	old_reads.push(read.tradeNo);
 	ctx.cookies.set(
             'shua_read_old_list',old_reads.join(','),{
@@ -186,13 +103,16 @@ router.get('/link', async (ctx, next) => {
                 overwrite:false  // 是否允许重写
             }
         );
-
-	await ctx.render('read/doumeng',{link:read.link})
-	//ctx.redirect(read.link)
+	
+	ctx.redirect(read.link)
 
     /*await ctx.render('index', {
     title: 'Hello Koa 2!'
   })*/
+})
+
+router.get('/link', async (ctx, next) => {
+	await ctx.render('read/doumeng')
 })
 
 router.get('/backlink', async (ctx, next) => {
