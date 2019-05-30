@@ -13,7 +13,7 @@
 			window.removeEventListener("pageshow",back_pageshow)
 			window.addEventListener('pageshow',back_pageshow)
 			location.href = "<%= link%>";
-		},500)
+		},800)
 		function back_pageshow(){
 			console.log('-----back_pageshow------')
 			location.href = "/backlink";
