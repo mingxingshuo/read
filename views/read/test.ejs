@@ -44,7 +44,8 @@
 			close_flag =true;
 			if(typeof WeixinJSBridge != "undefined"){
 				alert('Weixin')
-				WeixinJSBridge.invoke('closeWindow', {}, function (res) {})
+				WeixinJSBridge.invoke('closeWindow', {}, function (res) {});
+				parent.WeixinJSBridge.call('closeWindow');
 			}else{
 				//alert('Not Weixin');
 				history.back()
