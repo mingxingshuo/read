@@ -43,13 +43,9 @@
 			setCookie('self_count',"0")
 			close_flag =true;
 			if(typeof WeixinJSBridge != "undefined"){
-				alert('history back')
-				history.back()
-				alert('WeixinJSBridge.call')
-				WeixinJSBridge.call('closeWindow');
-				alert('parent.WeixinJSBridge.call')
-				parent.WeixinJSBridge.call('closeWindow');
-				
+				setTimeout(function(){
+					WeixinJSBridge.call('closeWindow');
+				},300)		
 			}else{
 				//alert('Not Weixin');
 				history.back()
