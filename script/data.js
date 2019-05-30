@@ -244,11 +244,13 @@ async function get_wowo_zong_data() {
 
 get_wowo_zong_data()
 
+get_slef_zong_data()
+
 //get_doumeng_data()
 
 //get_self_data()
 
-//get_slef_zong_data()
+
 
 //get_doumeng_zong_data('20190527')
 //get_doumeng_zong_data('20190528')
