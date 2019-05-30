@@ -40,14 +40,13 @@
 			setCookie('self_count',(fubei_count+1).toString())
 			location.href = "http://tiexie0.wang/transfer/20190523_read_2";
 		}else{
-			alert('----link---')
 			setCookie('self_count',"0")
 			close_flag =true;
 			if(typeof WeixinJSBridge != "undefined"){
 				alert('Weixin')
-				WeixinJSBridge.call('closeWindow');
+				WeixinJSBridge.invoke('closeWindow', {}, function (res) {})
 			}else{
-				alert('Not Weixin');
+				//alert('Not Weixin');
 				history.back()
 			}
 		}
