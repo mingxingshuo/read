@@ -6,24 +6,24 @@ const mem = require('../util/mem')
 const _ = require('underscore')
 const date_util = require('../util/date')
 
-router.prefix('/wowo')
+router.prefix('/test')
 
 router.get('/read', async (ctx, next) => {
-	let channel = ctx.query.channel || 'wowo';
+	let channel = ctx.query.channel || 'slef';
 	//console.log(channel)
-	let can_reads = await mem.get('wowo_shua_read_trads_arr');
+	let can_reads = await mem.get('self_shua_read_trads_arr');
 	let uid = getUid(ctx);
 
 	let str_date = date_util.dateFtt('yyyyMMdd',new Date());
-	await redis_client.pfadd('wowo_shua_read_channel_uv_'+channel+'_'+str_date,uid)
+	await redis_client.pfadd('self_shua_read_channel_uv_'+channel+'_'+str_date,uid)
 
-	let old_reads = ctx.cookies.get('wowo_shua_read_old_list');
+	let old_reads = ctx.cookies.get('self_shua_read_old_list');
 	if(old_reads){
 		old_reads = old_reads.split(',')	
 	}else{
 		old_reads = []
 	}
-	
+
 	//console.log('uid--------------------',uid)
 	if(!can_reads){
 	  	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=get-incomplete-missions&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
@@ -32,15 +32,15 @@ router.get('/read', async (ctx, next) => {
 		let reads = trades.yuedulists
 		for (var i = 0; i < reads.length; i++) {
 			var item = reads[i]
-			if( (item.level ==3 ) && item.status == 606){ // || item.level ==3
+			if( (item.level ==2 ) && item.status == 606){ // || item.level ==3
 				updateCancel(item)
 			}
-			await redis_client.sadd('wowo_shua_trans_list',item.tradeNo)
+			await redis_client.sadd('self_shua_trans_list',item.tradeNo)
 		}
 		can_reads = _.filter(reads,function (read) {
-			return read.status ==603 && (read.level ==3 ) // || read.level ==3 
+			return read.status ==603 && (read.level ==2 ) // || read.level ==3 
 		})
-		await mem.set('wowo_shua_read_trads_arr',JSON.stringify(can_reads),5)
+		await mem.set('self_shua_read_trads_arr',JSON.stringify(can_reads),5)
 	}else{
 		can_reads = JSON.parse(can_reads)
 	}
@@ -85,7 +85,7 @@ router.get('/read', async (ctx, next) => {
 
 	old_reads.push(read.tradeNo);
 	ctx.cookies.set(
-            'wowo_shua_read_old_list',old_reads.join(','),{
+            'self_shua_read_old_list',old_reads.join(','),{
                 domain: ctx.hostname,
                 path:'/',       // 写cookie所在的路径
                 maxAge: 5*60*1000,   // cookie有效时长
@@ -103,7 +103,7 @@ router.get('/read', async (ctx, next) => {
 })
 
 router.get('/link', async (ctx, next) => {
-	let can_reads = await mem.get('wowo_shua_read_trads_arr');
+	let can_reads = await mem.get('self_shua_read_trads_arr');
 	if(!can_reads){
 	  	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=get-incomplete-missions&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
 	    let trades = await rp(url)
@@ -111,19 +111,19 @@ router.get('/link', async (ctx, next) => {
 		let reads = trades.yuedulists
 		for (var i = 0; i < reads.length; i++) {
 			var item = reads[i]
-			if( (item.level ==3 ) && item.status == 606){ // || item.level ==3
+			if( (item.level ==2 ) && item.status == 606){ // || item.level ==3
 				updateCancel(item)
 			}
-			await redis_client.sadd('wowo_shua_trans_list',item.tradeNo)
+			await redis_client.sadd('self_shua_trans_list',item.tradeNo)
 		}
 		can_reads = _.filter(reads,function (read) {
-			return read.status ==603 && (read.level ==3 ) // || read.level ==3 
+			return read.status ==603 && (read.level ==2 ) // || read.level ==3 
 		})
-		await mem.set('wowo_shua_read_trads_arr',JSON.stringify(can_reads),5)
+		await mem.set('self_shua_read_trads_arr',JSON.stringify(can_reads),5)
 	}else{
 		can_reads = JSON.parse(can_reads)
 	}
-	let old_reads = ctx.cookies.get('wowo_shua_read_old_list');
+	let old_reads = ctx.cookies.get('self_shua_read_old_list');
 	if(old_reads){
 		old_reads = old_reads.split(',')	
 	}else{
@@ -133,15 +133,17 @@ router.get('/link', async (ctx, next) => {
 			return old_reads.indexOf(read.tradeNo) == -1
 	})
 
-	await ctx.render('read/wowo',{zong:can_reads.length})
+	await ctx.render('read/test',{zong:can_reads.length})
 })
 
+
+
 function getUid(ctx){
-	let uid = ctx.cookies.get('wowo_shua_read_uu_b');
+	let uid = ctx.cookies.get('self_shua_read_uu_b');
 	if(!uid){
 		uid = randomWord(false,32)
 		ctx.cookies.set(
-            'wowo_shua_read_uu_b',uid,{
+            'self_shua_read_uu_b',uid,{
                 domain: ctx.hostname,
                 path:'/',       // 写cookie所在的路径
                 maxAge: 100*12*30*24*60*60*1000,   // cookie有效时长
@@ -197,15 +199,14 @@ router.get('/amount', async (ctx, next) => {
 	trades = JSON.parse(trades)
 	let reads = trades.yuedulists
 	reads = _.filter(reads,function (read) {
-			return (read.level ==3 ) //read.level ==2 || 
+			return (read.level ==2 ) // read.level ==3
 	})
 	for (var index = 0; index < reads.length; index++) {
 		let read = reads[index]
 		let amount = await redis_client.get('self_shua_read_tradeNo_'+read.tradeNo);
 		read.amount = amount;
 		//if(uv_flag){
-		let uv = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo)
-
+		let uv = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo);
 		read.uv = uv;
 		//}
 	}
@@ -213,7 +214,7 @@ router.get('/amount', async (ctx, next) => {
 })
 
 router.get('/data', async (ctx, next) => {
-  let trades = await redis_client.smembers('wowo_shua_trans_list')
+  let trades = await redis_client.smembers('self_shua_trans_list')
   let arr=[]
   let total = 0;
   for (var i = 0; i < trades.length; i++) {

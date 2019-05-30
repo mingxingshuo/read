@@ -10,6 +10,7 @@ const index = require('./routes/index')
 const users = require('./routes/users')
 const selfs = require('./routes/self')
 const wowo = require('./routes/wowo')
+const test = require('./routes/stest')
 
 // error handler
 onerror(app)
@@ -39,6 +40,7 @@ app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
 app.use(selfs.routes(), selfs.allowedMethods())
 app.use(wowo.routes(), wowo.allowedMethods())
+app.use(test.routes(), test.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
