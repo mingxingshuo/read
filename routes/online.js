@@ -34,7 +34,7 @@ router.get('/', async(ctx, next) => {
 })
 
 router.get('/update', async(ctx, next) => {
-    let tradeNo = ctx.query.tradeNo
+    let tradeNo = ctx.request.query.tradeNo
     await redis_client.sadd('self_shua_online_list', tradeNo)
     ctx.body = {success: '成功'}
 })
