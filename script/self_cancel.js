@@ -62,7 +62,7 @@ async function updateCancel(read){
 
 
 var rule = new schedule.RecurrenceRule();
-var times = [1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56];
+var times = [1,  11,  21,  31,  41,  51 ];
 rule.second = times;
 var j = schedule.scheduleJob(rule, function () {
     console.log('--------自己执行查询退单--------');
