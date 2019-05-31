@@ -11,6 +11,7 @@ router.get('/', async(ctx, next) => {
     trades = JSON.parse(trades)
     let reads = trades.yuedulists
     let onlines = await redis_client.smembers('self_shua_online_list')
+    console.log(onlines,'-------------------onlines')
     let arr = []
     for (let item of reads) {
         if (item.level == 2) {
