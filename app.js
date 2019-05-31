@@ -11,6 +11,7 @@ const users = require('./routes/users')
 const selfs = require('./routes/self')
 const wowo = require('./routes/wowo')
 const test = require('./routes/stest')
+const online = require('./routes/online')
 
 // error handler
 onerror(app)
@@ -41,6 +42,7 @@ app.use(users.routes(), users.allowedMethods())
 app.use(selfs.routes(), selfs.allowedMethods())
 app.use(wowo.routes(), wowo.allowedMethods())
 app.use(test.routes(), test.allowedMethods())
+app.use(online.routes(), online.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
