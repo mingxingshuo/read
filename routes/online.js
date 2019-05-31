@@ -38,9 +38,9 @@ router.get('/update', async(ctx, next) => {
     ctx.body = {success: '成功'}
 })
 
-async function a() {
-    await redis_client.del('self_shua_online_list','"20190531103027374525"');
-}
-a()
+// async function a() {
+//     await redis_client.del('self_shua_online_list');
+// }
+// a()
 
 module.exports = router
