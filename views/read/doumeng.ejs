@@ -33,7 +33,7 @@
 		var zongcount = <%= zong%>
 		//alert('fubei_count : '+fubei_count+' , zongcount : '+zongcount)
 		if(fubei_count==0){
-			setCookie('self_count',(fubei_count+1).toString())
+			setCookie('doumeng_count',(fubei_count+1).toString())
 			location.href = "/read";
 		}else if(fubei_count<zongcount){
 			setCookie('doumeng_count',(fubei_count+1).toString())
