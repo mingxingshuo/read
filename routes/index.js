@@ -120,13 +120,13 @@ router.get('/link', async (ctx, next) => {
 		let reads = trades.yuedulists
 		for (var i = 0; i < reads.length; i++) {
 			var item = reads[i]
-			if( (item.level ==2 ) && item.status == 606){ // || item.level ==3
+			if( (item.level ==1 ) && item.status == 606){ // || item.level ==3
 				updateCancel(item)
 			}
 			await redis_client.sadd('shua_trans_list',item.tradeNo)
 		}
 		can_reads = _.filter(reads,function (read) {
-			return read.status ==603 && (read.level ==2 ) // || read.level ==3 
+			return read.status ==603 && (read.level ==1 ) // || read.level ==3 
 		})
 		await mem.set('shua_read_trads_arr',JSON.stringify(can_reads),5)
 	}else{
