@@ -13,16 +13,16 @@ router.get('/', async(ctx, next) => {
     let onlines = await redis_client.smembers('self_shua_online_list')
     let arr = []
     for (let item of reads) {
-        if (item.level == 2 ) {
+        if (item.level == 2) {
             let isOnline = 1
-            if(onlines.indexOf(item.tradeNo)!=-1){
+            if (onlines.indexOf(item.tradeNo) != -1) {
                 isOnline = 0
             }
             let data = {
-                title:item.title,
-                link:item.link,
-                date:item.tradeNo.slice(0,8),
-                isOnline:isOnline
+                title: decodeURI(item.title),
+                link: item.link,
+                date: item.tradeNo.slice(0, 8),
+                isOnline: isOnline
             }
             arr.push(data)
         }
@@ -31,7 +31,7 @@ router.get('/', async(ctx, next) => {
 })
 
 router.get('/update', async(ctx, next) => {
-    let tradeNo =ctx.query.tradeNo
+    let tradeNo = ctx.query.tradeNo
     await redis_client.sadd('self_shua_online_list', tradeNo)
     ctx.body = {success: '成功'}
 })
