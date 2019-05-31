@@ -12,6 +12,7 @@ const selfs = require('./routes/self')
 const wowo = require('./routes/wowo')
 const test = require('./routes/stest')
 const online = require('./routes/online')
+const admin = require('./routes/admin')
 
 // error handler
 onerror(app)
@@ -43,6 +44,7 @@ app.use(selfs.routes(), selfs.allowedMethods())
 app.use(wowo.routes(), wowo.allowedMethods())
 app.use(test.routes(), test.allowedMethods())
 app.use(online.routes(), online.allowedMethods())
+app.use(admin.routes(), admin.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
