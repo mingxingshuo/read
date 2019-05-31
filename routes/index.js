@@ -212,7 +212,10 @@ router.get('/amount', async (ctx, next) => {
 	reads = _.filter(reads,function (read) {
 			return read.level ==1
 	})
-	for (var index = 0; index < reads.length; index++) {
+
+	var length = reads.length>10?10:reads.length;
+
+	for (var index = 0; index < length; index++) {
 		let read = reads[index]
 		let amount = await redis_client.get('shua_read_tradeNo_'+read.tradeNo);
 		read.amount = amount;
