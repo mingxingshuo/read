@@ -10,12 +10,10 @@ router.get('/', async(ctx, next) => {
     let trades = await rp(url)
     trades = JSON.parse(trades)
     let reads = trades.yuedulists
-    console.log(reads,'-------------------reads')
     let onlines = await redis_client.smembers('self_shua_online_list')
-    console.log(onlines,'-------------------onlines')
     let arr = []
     for (let item of reads) {
-        // if (item.level == 2) {
+        if (item.level == 2) {
             let isOnline = 1
             if (onlines.indexOf(item.tradeNo) != -1) {
                 isOnline = 0
@@ -28,7 +26,7 @@ router.get('/', async(ctx, next) => {
                 isOnline: isOnline
             }
             arr.push(data)
-        // }
+        }
     }
     ctx.body = arr
 })
@@ -39,9 +37,8 @@ router.get('/update', async(ctx, next) => {
     ctx.body = {success: '成功'}
 })
 
-// async function a() {
-//     await redis_client.del('self_shua_online_list');
-// }
-// a()
+router.get('/clear', async(ctx, next) => {
+    await redis_client.del('self_shua_online_list');
+})
 
 module.exports = router
