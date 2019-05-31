@@ -142,6 +142,7 @@ router.get('/link', async (ctx, next) => {
 	can_reads = _.filter(can_reads,function (read) {
 			return old_reads.indexOf(read.tradeNo) == -1
 	})
+	//console.log('read/doumeng')
 	await ctx.render('read/doumeng',{zong:can_reads.length})
 })
 
@@ -185,22 +186,21 @@ async function updateTrade(read){
 	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=update-mission&tradeNo='+
 	read.tradeNo+'&completes='+read.amount+'&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
 	let body = await rp(url)
-	console.log('-------updateTrade---------')
-	console.log(read)
-	console.log(body)
+	//console.log('-------updateTrade---------')
+	//console.log(read)
+	//console.log(body)
 }
 
 async function updateCancel(read){
 	console.log('-------updateCancel---------')
 	//let amount = await redis_client.pfcount('shua_read_tradeNo_uv_'+read.tradeNo)
-	
 	let amount = parseInt( await redis_client.get("shua_read_tradeNo_"+read.tradeNo) );
 
 	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=ack-mission-revoking&tradeNo='+
 	read.tradeNo+'&completes='+amount+'&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
 	let body = await rp(url)
-	console.log(read)
-	console.log(body)
+	//console.log(read)
+	//console.log(body)
 }
 
 router.get('/amount', async (ctx, next) => {
