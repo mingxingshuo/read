@@ -207,17 +207,20 @@ router.get('/amount', async (ctx, next) => {
 	})
 	var length = reads.length>10?10:reads.length;
 
+	var list =[]
+
 	for (var index = 0; index < length; index++) {
 		let read = reads[index]
 		let amount = await redis_client.get('self_shua_read_tradeNo_'+read.tradeNo);
 		read.amount = amount;
+		list.push(read)
 		//if(uv_flag){
 		//let uv = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo)
 
 		//read.uv = uv;
 		//}
 	}
-	ctx.body = reads
+	ctx.body = list
 })
 
 
