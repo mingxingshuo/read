@@ -10,6 +10,7 @@ router.get('/', async(ctx, next) => {
     let trades = await rp(url)
     trades = JSON.parse(trades)
     let reads = trades.yuedulists
+    console.log(reads,'-------------------reads')
     let onlines = await redis_client.smembers('self_shua_online_list')
     console.log(onlines,'-------------------onlines')
     let arr = []
