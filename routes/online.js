@@ -19,6 +19,7 @@ router.get('/', async(ctx, next) => {
                 isOnline = 0
             }
             let data = {
+                tradeNo:item.tradeNo,
                 title: decodeURI(item.title),
                 link: item.link,
                 date: item.tradeNo.slice(0, 8),
