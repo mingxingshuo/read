@@ -2,7 +2,7 @@ const router = require('koa-router')();
 
 router.prefix('/admin');
 
-router.get('/', function (ctx, next) {
+router.use('/*', function (ctx, next) {
   ctx.render("admin/index")
 });
 
