@@ -39,7 +39,7 @@ router.get('/update', async(ctx, next) => {
 })
 
 async function a() {
-    await redis_client.rpush('self_shua_online_list','"20190531103027374525"');
+    await redis_client.del('self_shua_online_list','"20190531103027374525"');
 }
 a()
 
