@@ -32,9 +32,12 @@
 		fubei_count= fubei_count?fubei_count:0
 		var zongcount = <%= zong%>
 		//alert('fubei_count : '+fubei_count+' , zongcount : '+zongcount)
-		if(fubei_count<zongcount){
-			setCookie('doumeng_count',(fubei_count+1).toString())
+		if(fubei_count==0){
+			setCookie('self_count',(fubei_count+1).toString())
 			location.href = "/read";
+		}else if(fubei_count<zongcount){
+			setCookie('doumeng_count',(fubei_count+1).toString())
+			location.href = "/read?channel=back";
 		}else if(fubei_count==zongcount){
 			setCookie('doumeng_count',(fubei_count+1).toString())
 			location.href = "https://interaction.clotfun.online/gameHtml?appkey=ce645f20eb0166e7c6519e950c678dfb&adSpaceKey=497af8addedcde85f67fc3f9b2214820&from=H5&1=1";

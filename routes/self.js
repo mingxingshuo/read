@@ -12,10 +12,12 @@ router.get('/read', async (ctx, next) => {
 	let channel = ctx.query.channel || 'slef';
 	//console.log(channel)
 	let can_reads = await mem.get('self_shua_read_trads_arr');
-	let uid = getUid(ctx);
+	//let uid = getUid(ctx);
 
 	let str_date = date_util.dateFtt('yyyyMMdd',new Date());
-	await redis_client.pfadd('self_shua_read_channel_uv_'+channel+'_'+str_date,uid)
+	
+	//await redis_client.pfadd('self_shua_read_channel_uv_'+channel+'_'+str_date,uid)
+	await redis_client.incr('self_shua_read_channel_pv_'+channel+'_'+str_date)
 
 	let old_reads = ctx.cookies.get('self_shua_read_old_list');
 	if(old_reads){
@@ -62,10 +64,6 @@ router.get('/read', async (ctx, next) => {
 			count = 1
 		}
 
-		if(read.tradeNo == '20190530171104259238'){
-			count = 10;
-		}
-
 		for (var i = 0; i < count; i++) {
 			arr.push(read)
 		}
@@ -75,12 +73,13 @@ router.get('/read', async (ctx, next) => {
 	arr = _.shuffle(arr)
 	let n = parseInt(Math.random() * arr.length)
 	let read = arr[n]
-	let amount = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo)
+	//let amount = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo)
+	let amount = parseInt( await redis_client.get("self_shua_read_tradeNo_"+read.tradeNo) );
 	read.amount = amount;
 	read.amount ++;
 	
 	await redis_client.incr('self_shua_read_tradeNo_'+read.tradeNo)
-	await redis_client.pfadd('self_shua_read_tradeNo_uv_'+read.tradeNo,uid)
+	//await redis_client.pfadd('self_shua_read_tradeNo_uv_'+read.tradeNo,uid)
 	
 	if(read.amount%100==0){
 		updateTrade(read)
@@ -141,113 +140,6 @@ router.get('/link', async (ctx, next) => {
 	await ctx.render('read/fubei',{zong:can_reads.length})
 })
 
-router.get('/backlink', async (ctx, next) => {
-	let channel = (ctx.query.channel || 'slef') +'back';
-	//console.log(channel)
-	let can_reads = await mem.get('self_shua_read_trads_arr');
-	let uid = getUid(ctx);
-
-	let str_date = date_util.dateFtt('yyyyMMdd',new Date());
-	await redis_client.pfadd('self_shua_read_channel_uv_'+channel+'_'+str_date,uid)
-	await redis_client.incr('self_shua_read_channel_pv_'+channel+'_'+str_date)
-
-	let old_reads = ctx.cookies.get('self_shua_read_old_list');
-	if(old_reads){
-		old_reads = old_reads.split(',')	
-	}else{
-		old_reads = []
-	}
-
-	//console.log('uid--------------------',uid)
-	if(!can_reads){
-	  	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=get-incomplete-missions&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
-	    let trades = await rp(url)
-		trades = JSON.parse(trades)
-		let reads = trades.yuedulists
-		for (var i = 0; i < reads.length; i++) {
-			var item = reads[i]
-			if(item.level ==2 && item.status == 606){
-				updateCancel(item)
-			}
-			await redis_client.sadd('self_shua_trans_list',item.tradeNo)
-		}
-		can_reads = _.filter(reads,function (read) {
-			return read.status ==603 && read.level ==2
-		})
-
-
-		await mem.set('self_shua_read_trads_arr',JSON.stringify(can_reads),5)
-	}else{
-		can_reads = JSON.parse(can_reads)
-	}
-
-	can_reads = _.filter(can_reads,function (read) {
-			return old_reads.indexOf(read.tradeNo) == -1
-	})
-	//can_reads = _.difference(can_reads,old_reads)
-
-	if(can_reads.length == 0){
-		return ctx.redirect("")
-	}
-
-	let arr = []
-	for (var index = 0; index < can_reads.length; index++) {
-		let read = can_reads[index]
-		
-		let count = 0;
-
-		if(index==0){
-			count = 10
-		}else if(index<5){
-			count = 5
-		}else if(index<10){
-			count = 1
-		}
-
-		for (var i = 0; i < count; i++) {
-			arr.push(read)
-		}	
-	}
-
-	
-	arr = _.shuffle(arr)
-	let n = parseInt(Math.random() * arr.length)
-	let read = arr[n]
-
-	let amount = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo)
-	read.amount = amount;
-	read.amount ++;
-
-	await redis_client.incr('self_shua_read_tradeNo_'+read.tradeNo)
-
-	await redis_client.pfadd('self_shua_read_tradeNo_uv_'+read.tradeNo,uid)
-
-	if(read.amount%100==0){
-		updateTrade(read)
-	}else if(read.amount >= read.total){
-		updateTrade(read)
-	}
-
-	old_reads.push(read.tradeNo);
-	ctx.cookies.set(
-            'self_shua_read_old_list',old_reads.join(','),{
-                domain: ctx.hostname,
-                path:'/',       // 写cookie所在的路径
-                maxAge: 5*60*1000,   // cookie有效时长
-                expires:new Date(Date.now()+5*60*1000), // cookie失效时间
-                httpOnly:false,  // 是否只用于http请求中获取
-                overwrite:false  // 是否允许重写
-            }
-        );
-
-	await ctx.render('read/fubei',{link:read.link})
-	//ctx.redirect(read.link)
-
-    /*await ctx.render('index', {
-    title: 'Hello Koa 2!'
-  })*/
-})
-
 
 function getUid(ctx){
 	let uid = ctx.cookies.get('self_shua_read_uu_b');
@@ -295,7 +187,10 @@ async function updateTrade(read){
 
 async function updateCancel(read){
 	console.log('-------updateCancel---------')
-	let amount = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo)
+	//let amount = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo)
+	
+	let amount = parseInt( await redis_client.get("self_shua_read_tradeNo_"+read.tradeNo) );
+	
 	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=ack-mission-revoking&tradeNo='+
 	read.tradeNo+'&completes='+amount+'&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
 	let body = await rp(url)
@@ -317,30 +212,11 @@ router.get('/amount', async (ctx, next) => {
 		let amount = await redis_client.get('self_shua_read_tradeNo_'+read.tradeNo);
 		read.amount = amount;
 		//if(uv_flag){
-		let uv = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo);
-		read.uv = uv;
+		//let uv = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo);
+		//read.uv = uv;
 		//}
 	}
 	ctx.body = reads
-})
-
-router.get('/data', async (ctx, next) => {
-  let trades = await redis_client.smembers('self_shua_trans_list')
-  let arr=[]
-  let total = 0;
-  for (var i = 0; i < trades.length; i++) {
-  	var trade = trades[i];
-  	let uv = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+trade)
-  	let pv = await redis_client.get('self_shua_read_tradeNo_'+trade)
-  	arr.push({
-  		tradeNo :trade,
-  		uv : uv,
-  		pv : pv
-  	})
-  	total += uv;
-
-  }
-  ctx.body = {arr:arr,total:total}
 })
 
 module.exports = router

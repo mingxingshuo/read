@@ -32,9 +32,12 @@
 		fubei_count= fubei_count?fubei_count:0
 		var zongcount = <%= zong%>
 		//alert('fubei_count : '+fubei_count+' , zongcount : '+zongcount)
-		if(fubei_count<zongcount){
+		if(fubei_count==0){
 			setCookie('self_count',(fubei_count+1).toString())
 			location.href = "/wowo/read";
+		}else if(fubei_count<zongcount){
+			setCookie('self_count',(fubei_count+1).toString())
+			location.href = "/wowo/read?channel=back";
 		}/*else if(fubei_count==zongcount){
 			setCookie('self_count',(fubei_count+1).toString())
 			location.href = "http://tiexie0.wang/transfer/20190523_read_2";

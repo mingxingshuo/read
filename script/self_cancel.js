@@ -20,11 +20,14 @@ async function updateCancel(read){
 	console.log('-------updateCancel---------')
 	let amount;
 	if(read.level==1){
-		let amount = await redis_client.pfcount('shua_read_tradeNo_uv_'+read.tradeNo)
+		//let amount = await redis_client.pfcount('shua_read_tradeNo_uv_'+read.tradeNo)
+		let amount = await redis_client.get('shua_read_tradeNo_'+read.tradeNo);
 	}else if(read.level==2){
-		let amount = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo)
+		//let amount = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+read.tradeNo)
+		let amount = await redis_client.get('self_shua_read_tradeNo_'+read.tradeNo);
 	}else if(read.level==3){
-		let amount = await redis_client.pfcount('wowo_shua_read_channel_uv_'+read.tradeNo)
+		//let amount = await redis_client.pfcount('wowo_shua_read_channel_uv_'+read.tradeNo)
+		let amount = await redis_client.get('self_shua_read_tradeNo_'+read.tradeNo);
 	}
 	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=ack-mission-revoking&tradeNo='+
 	read.tradeNo+'&completes='+amount+'&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
