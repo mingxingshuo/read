@@ -12,7 +12,7 @@ async function req_trads(){
 		var item = reads[i]
 		if(item.status == 606){
 			updateCancel(item)
-		}else if(item.status =603){
+		}else if(item.status ==603){
 			updateTrade(item)
 		}
 	}
