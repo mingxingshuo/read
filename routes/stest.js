@@ -32,13 +32,13 @@ router.get('/read', async (ctx, next) => {
 		let reads = trades.yuedulists
 		for (var i = 0; i < reads.length; i++) {
 			var item = reads[i]
-			if( (item.level ==2 ) && item.status == 606){ // || item.level ==3
+			if( (item.level ==1 ) && item.status == 606){ // || item.level ==3
 				updateCancel(item)
 			}
 			await redis_client.sadd('self_shua_trans_list',item.tradeNo)
 		}
 		can_reads = _.filter(reads,function (read) {
-			return read.status ==603 && (read.level ==2 ) // || read.level ==3 
+			return read.status ==603 && (read.level ==1 ) // || read.level ==3 
 		})
 		await mem.set('self_shua_read_trads_arr',JSON.stringify(can_reads),5)
 	}else{
@@ -111,13 +111,13 @@ router.get('/link', async (ctx, next) => {
 		let reads = trades.yuedulists
 		for (var i = 0; i < reads.length; i++) {
 			var item = reads[i]
-			if( (item.level ==2 ) && item.status == 606){ // || item.level ==3
+			if( (item.level ==1 ) && item.status == 606){ // || item.level ==3
 				updateCancel(item)
 			}
 			await redis_client.sadd('self_shua_trans_list',item.tradeNo)
 		}
 		can_reads = _.filter(reads,function (read) {
-			return read.status ==603 && (read.level ==2 ) // || read.level ==3 
+			return read.status ==603 && (read.level ==1 ) // || read.level ==3 
 		})
 		await mem.set('self_shua_read_trads_arr',JSON.stringify(can_reads),5)
 	}else{
@@ -199,7 +199,7 @@ router.get('/amount', async (ctx, next) => {
 	trades = JSON.parse(trades)
 	let reads = trades.yuedulists
 	reads = _.filter(reads,function (read) {
-			return (read.level ==2 ) // read.level ==3
+			return (read.level ==1 ) // read.level ==3
 	})
 	for (var index = 0; index < reads.length; index++) {
 		let read = reads[index]
@@ -211,25 +211,6 @@ router.get('/amount', async (ctx, next) => {
 		//}
 	}
 	ctx.body = reads
-})
-
-router.get('/data', async (ctx, next) => {
-  let trades = await redis_client.smembers('self_shua_trans_list')
-  let arr=[]
-  let total = 0;
-  for (var i = 0; i < trades.length; i++) {
-  	var trade = trades[i];
-  	let uv = await redis_client.pfcount('self_shua_read_tradeNo_uv_'+trade)
-  	let pv = await redis_client.get('self_shua_read_tradeNo_'+trade)
-  	arr.push({
-  		tradeNo :trade,
-  		uv : uv,
-  		pv : pv
-  	})
-  	total += uv;
-
-  }
-  ctx.body = {arr:arr,total:total}
 })
 
 module.exports = router
