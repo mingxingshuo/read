@@ -62,7 +62,7 @@ router.get('/read', async (ctx, next) => {
 
 		if(index==0){
 			count = 5
-		}else if(index<12){
+		}else if(index<15){
 			count = 1
 		}
 		for (var i = 0; i < count; i++) {
