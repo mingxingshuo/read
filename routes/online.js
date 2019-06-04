@@ -13,7 +13,7 @@ router.get('/', async(ctx, next) => {
     let onlines = await redis_client.smembers('self_shua_online_list')
     let arr = []
     for (let item of reads) {
-        if (item.level == 2) {
+        if (item.level == 1) {
             let isOnline = 1
             if (onlines.indexOf(item.tradeNo) != -1) {
                 isOnline = 0
