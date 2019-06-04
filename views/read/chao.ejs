@@ -17,11 +17,8 @@
 		}
 	}, false);
 
-	setTimeout(function(){	
-			window.removeEventListener("pageshow",back_pageshow)
-			window.addEventListener('pageshow',back_pageshow)
-			link()	
-	},300);
+	window.removeEventListener("pageshow",back_pageshow)
+	window.addEventListener('pageshow',back_pageshow)
 
 	function back_pageshow(){
 		link()
