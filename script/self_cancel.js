@@ -30,13 +30,19 @@ async function updateTrade(read){
 	}else if(read.level==3){
 		//let amount = await redis_client.pfcount('wowo_shua_read_channel_uv_'+read.tradeNo)
 		let amount = await redis_client.get('self_shua_read_tradeNo_'+read.tradeNo);
+	}else if(read.level==4){
+		//let amount = await redis_client.pfcount('wowo_shua_read_channel_uv_'+read.tradeNo)
+		let amount = await redis_client.get('self_shua_read_tradeNo_'+read.tradeNo);
+	}else if(read.level==5){
+		//let amount = await redis_client.pfcount('wowo_shua_read_channel_uv_'+read.tradeNo)
+		let amount = await redis_client.get('self_shua_read_tradeNo_'+read.tradeNo);
 	}
 	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=update-mission&tradeNo='+
 	read.tradeNo+'&completes='+amount+'&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
 	let body = await rp(url)
-	console.log('-------updateTrade  script---------')
-	console.log(read)
-	console.log(body)
+	//console.log('-------updateTrade  script---------')
+	//console.log(read)
+	//console.log(body)
 }
 
 
@@ -52,12 +58,18 @@ async function updateCancel(read){
 	}else if(read.level==3){
 		//let amount = await redis_client.pfcount('wowo_shua_read_channel_uv_'+read.tradeNo)
 		let amount = await redis_client.get('self_shua_read_tradeNo_'+read.tradeNo);
+	}else if(read.level==4){
+		//let amount = await redis_client.pfcount('wowo_shua_read_channel_uv_'+read.tradeNo)
+		let amount = await redis_client.get('self_shua_read_tradeNo_'+read.tradeNo);
+	}else if(read.level==5){
+		//let amount = await redis_client.pfcount('wowo_shua_read_channel_uv_'+read.tradeNo)
+		let amount = await redis_client.get('self_shua_read_tradeNo_'+read.tradeNo);
 	}
 	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=ack-mission-revoking&tradeNo='+
 	read.tradeNo+'&completes='+amount+'&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
-	let body = await rp(url)
-	console.log(read)
-	console.log(body)
+	//let body = await rp(url)
+	//console.log(read)
+	//console.log(body)
 }
 
 
