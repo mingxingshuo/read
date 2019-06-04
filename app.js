@@ -14,7 +14,7 @@ const chao = require('./routes/chao')
 const test = require('./routes/stest')
 const online = require('./routes/online')
 const admin = require('./routes/admin')
-const adminRead = require('./routes/adminRead')
+const readAdmin = require('./routes/readAdmin')
 
 // error handler
 onerror(app)
@@ -48,7 +48,7 @@ app.use(chao.routes(), chao.allowedMethods())
 app.use(test.routes(), test.allowedMethods())
 app.use(online.routes(), online.allowedMethods())
 app.use(admin.routes(), admin.allowedMethods())
-app.use(adminRead.routes(), adminRead.allowedMethods())
+app.use(readAdmin.routes(), readAdmin.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
