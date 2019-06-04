@@ -1,10 +1,6 @@
 const router = require('koa-router')();
 
-router.prefix('/admin_read');
-
-router.all('/', async (ctx, next) => {
-  await ctx.render("admin4/index")
-});
+router.prefix('/adminRead');
 
 router.all('/*', async (ctx, next) => {
   await ctx.render("admin4/index")
