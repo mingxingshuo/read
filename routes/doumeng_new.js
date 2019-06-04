@@ -34,13 +34,13 @@ router.get('/read', async (ctx, next) => {
 		let reads = trades.yuedulists
 		for (var i = 0; i < reads.length; i++) {
 			var item = reads[i]
-			if( (item.level ==5 ) && item.status == 606){ // || item.level ==5
+			if( (item.level ==5 ) && item.status == 606){ // || item.level ==5 
 				updateCancel(item)
 			}
 			await redis_client.sadd('new_shua_trans_list',item.tradeNo)
 		}
 		can_reads = _.filter(reads,function (read) {
-			return read.status ==603 && (read.level ==3 ) // || read.level ==3 
+			return read.status ==603 && (read.level ==5  ) // 
 		})
 		await mem.set('new_shua_read_trads_arr',JSON.stringify(can_reads),5)
 	}else{
@@ -123,7 +123,7 @@ router.get('/link', async (ctx, next) => {
 			await redis_client.sadd('new_shua_trans_list',item.tradeNo)
 		}
 		can_reads = _.filter(reads,function (read) {
-			return read.status ==603 && (read.level ==5 ) // || read.level ==3 
+			return read.status ==603 && (read.level ==5 ) // 
 		})
 		await mem.set('new_shua_read_trads_arr',JSON.stringify(can_reads),5)
 	}else{
