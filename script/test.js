@@ -75,8 +75,9 @@ async function clearWowo(time) {
     return
 }
 
-clearSelf()
-clearChao()
-clearDoumeng()
-clearIndex()
-clearWowo()
+var time = date_util.dateFtt('yyyyMMdd', new Date());
+clearSelf(time)
+clearChao(time)
+clearDoumeng(time)
+clearIndex(time)
+clearWowo(time)
