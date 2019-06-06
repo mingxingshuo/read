@@ -46,9 +46,9 @@ router.get('/new', async(ctx, next) => {
     let arr = []
     for (let item of reads) {
         if (item.level == 1) {
-            let isOnline = 1
+            let isOnline = 0
             if (onlines.indexOf(item.tradeNo) != -1) {
-                isOnline = 0
+                isOnline = 1
             }
             let data = {
                 tradeNo:item.tradeNo,
