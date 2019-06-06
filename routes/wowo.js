@@ -16,9 +16,9 @@ router.get('/read', async (ctx, next) => {
 
 	await redis_client.incr('wowo_shua_read_channel_pv_'+channel+'_'+str_date)
 
-	if(Math.random()<0.2){
+	/*if(Math.random()<0.1){
 		return ctx.redirect('http://tiexie0.wang/transfer/20190523_read_4')
-	}
+	}*/
 
 	let can_reads = await mem.get('wowo_shua_read_trads_arr');
 
