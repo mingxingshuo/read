@@ -45,9 +45,13 @@ router.get('/read', async (ctx, next) => {
 		can_reads = JSON.parse(can_reads)
 	}
 
+	let onlines = await redis_client.smembers('self_shua_online_list_4')
+
 	can_reads = _.filter(can_reads,function (read) {
-			return old_reads.indexOf(read.tradeNo) == -1
+			return onlines.indexOf(read.tradeNo) != -1 &&  old_reads.indexOf(read.tradeNo) == -1
 	})
+
+	console.log(can_reads)
 
 	if(can_reads.length == 0){
 		return ctx.redirect("")
@@ -75,7 +79,6 @@ router.get('/read', async (ctx, next) => {
 	read.amount ++;
 	
 	await redis_client.incr('self_shua_read_tradeNo_'+read.tradeNo)
-	await redis_client.pfadd('self_shua_read_tradeNo_uv_'+read.tradeNo,uid)
 	
 	if(read.amount%100==0){
 		updateTrade(read)
@@ -132,6 +135,8 @@ router.get('/link', async (ctx, next) => {
 	can_reads = _.filter(can_reads,function (read) {
 			return old_reads.indexOf(read.tradeNo) == -1
 	})
+
+	console.log(can_reads)
 
 	await ctx.render('read/test',{zong:can_reads.length})
 })
