@@ -1,3 +1,4 @@
+const asyncRedis = require("async-redis");
 const redis_client = asyncRedis.createClient();
 
 async function test() {

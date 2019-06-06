@@ -1,3 +1,4 @@
+const asyncRedis = require("async-redis");
 const redis_client = asyncRedis.createClient();
 const schedule = require("node-schedule");
 const date_util = require('../util/date')
