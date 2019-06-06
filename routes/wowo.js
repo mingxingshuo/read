@@ -11,6 +11,11 @@ router.prefix('/wowo')
 router.get('/read', async (ctx, next) => {
 	let channel = ctx.query.channel || 'wowo';
 	//console.log(channel)
+
+	if(Math.random()<0.2 && channel== 'wowo'){
+		return ctx.redirect('http://tiexie0.wang/transfer/20190523_read_4')
+	}
+
 	let can_reads = await mem.get('wowo_shua_read_trads_arr');
 	let uid = getUid(ctx);
 
