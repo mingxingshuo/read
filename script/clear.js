@@ -6,10 +6,10 @@ const date_util = require('../util/date')
 async function clearSelf(time) {
     let self = await redis_client.smembers('self_shua_trans_list')
     for (let item of self) {
-        let tradeTime = item.tradeNo.slice(0, 8)
+        let tradeTime = item.slice(0, 8)
         if (parseInt(time) - parseInt(tradeTime) >= 4) {
-            await redis_client.srem('self_shua_trans_list', item.tradeNo)
-            await redis_client.del('self_shua_read_tradeNo_' + item.tradeNo)
+            await redis_client.srem('self_shua_trans_list', item)
+            await redis_client.del('self_shua_read_tradeNo_' + item)
         }
     }
     return
@@ -18,10 +18,10 @@ async function clearSelf(time) {
 async function clearChao(time) {
     let chao = await redis_client.smembers('chao_shua_trans_list')
     for (let item of chao) {
-        let tradeTime = item.tradeNo.slice(0, 8)
+        let tradeTime = item.slice(0, 8)
         if (parseInt(time) - parseInt(tradeTime) >= 4) {
-            await redis_client.srem('chao_shua_trans_list', item.tradeNo)
-            await redis_client.del('self_shua_read_tradeNo_' + item.tradeNo)
+            await redis_client.srem('chao_shua_trans_list', item)
+            await redis_client.del('self_shua_read_tradeNo_' + item)
         }
     }
     return
@@ -30,10 +30,10 @@ async function clearChao(time) {
 async function clearDoumeng(time) {
     let doumeng = await redis_client.smembers('new_shua_trans_list')
     for (let item of doumeng) {
-        let tradeTime = item.tradeNo.slice(0, 8)
+        let tradeTime = item.slice(0, 8)
         if (parseInt(time) - parseInt(tradeTime) >= 4) {
-            await redis_client.srem('new_shua_trans_list', item.tradeNo)
-            await redis_client.del('self_shua_read_tradeNo_' + item.tradeNo)
+            await redis_client.srem('new_shua_trans_list', item)
+            await redis_client.del('self_shua_read_tradeNo_' + item)
         }
     }
     return
@@ -42,10 +42,10 @@ async function clearDoumeng(time) {
 async function clearIndex(time) {
     let index = await redis_client.smembers('shua_trans_list')
     for (let item of index) {
-        let tradeTime = item.tradeNo.slice(0, 8)
+        let tradeTime = item.slice(0, 8)
         if (parseInt(time) - parseInt(tradeTime) >= 4) {
-            await redis_client.srem('shua_trans_list', item.tradeNo)
-            await redis_client.del('self_shua_read_tradeNo_' + item.tradeNo)
+            await redis_client.srem('shua_trans_list', item)
+            await redis_client.del('self_shua_read_tradeNo_' + item)
         }
     }
     return
@@ -54,10 +54,10 @@ async function clearIndex(time) {
 async function clearWowo(time) {
     let wowo = await redis_client.smembers('wowo_shua_trans_list')
     for (let item of wowo) {
-        let tradeTime = item.tradeNo.slice(0, 8)
+        let tradeTime = item.slice(0, 8)
         if (parseInt(time) - parseInt(tradeTime) >= 4) {
-            await redis_client.srem('wowo_shua_trans_list', item.tradeNo)
-            await redis_client.del('self_shua_read_tradeNo_' + item.tradeNo)
+            await redis_client.srem('wowo_shua_trans_list', item)
+            await redis_client.del('self_shua_read_tradeNo_' + item)
         }
     }
     return
@@ -66,9 +66,9 @@ async function clearWowo(time) {
 async function clearOnline(time) {
     let online = await redis_client.smembers('self_shua_online_list')
     for (let item of online) {
-        let tradeTime = item.tradeNo.slice(0, 8)
+        let tradeTime = item.slice(0, 8)
         if (parseInt(time) - parseInt(tradeTime) >= 4) {
-            await redis_client.srem('self_shua_online_list', item.tradeNo)
+            await redis_client.srem('self_shua_online_list', item)
         }
     }
     return
