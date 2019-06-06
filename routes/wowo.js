@@ -11,18 +11,16 @@ router.prefix('/wowo')
 router.get('/read', async (ctx, next) => {
 	let channel = ctx.query.channel || 'wowo';
 	//console.log(channel)
+	let str_date = date_util.dateFtt('yyyyMMdd',new Date());
+	//await redis_client.pfadd('wowo_shua_read_channel_uv_'+channel+'_'+str_date,uid)
+
+	await redis_client.incr('wowo_shua_read_channel_pv_'+channel+'_'+str_date)
 
 	if(Math.random()<0.2){
 		return ctx.redirect('http://tiexie0.wang/transfer/20190523_read_4')
 	}
 
 	let can_reads = await mem.get('wowo_shua_read_trads_arr');
-	let uid = getUid(ctx);
-
-	let str_date = date_util.dateFtt('yyyyMMdd',new Date());
-	//await redis_client.pfadd('wowo_shua_read_channel_uv_'+channel+'_'+str_date,uid)
-
-	await redis_client.incr('wowo_shua_read_channel_pv_'+channel+'_'+str_date)
 
 	let old_reads = ctx.cookies.get('wowo_shua_read_old_list');
 	if(old_reads){
