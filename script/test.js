@@ -7,3 +7,4 @@ async function test() {
     // await redis_client.del('self_shua_online_list', item.tradeNo)
     // console.log(test,'---------------test')
 }
+test()
