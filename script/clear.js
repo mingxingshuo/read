@@ -54,7 +54,7 @@ async function clearWowo() {
         let time = date_util.dateFtt('yyyyMMdd', new Date());
         let tradeTime = item.tradeNo.slice(0, 8)
         if (parseInt(time) - parseInt(tradeTime) >= 4) {
-            await redis_client.del('wowo_shua_trans_list', item.tradeNo)
+            await redis_client.srem('wowo_shua_trans_list', item.tradeNo)
         }
     }
 }
