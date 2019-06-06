@@ -1,5 +1,6 @@
 const asyncRedis = require("async-redis");
 const redis_client = asyncRedis.createClient();
+const date_util = require('../util/date')
 
 async function clearSelf(time) {
     let self = await redis_client.smembers('self_shua_trans_list')
