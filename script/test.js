@@ -8,7 +8,7 @@ async function clearSelf(time) {
     for (let item of self) {
         let tradeTime = item.slice(0, 8)
         console.log(tradeTime,'------------tradetime')
-        console.log(parseInt(time) - parseInt(tradeTime) >= 4)
+        console.log(time,tradeTime,parseInt(time) - parseInt(tradeTime) >= 4)
         if (parseInt(time) - parseInt(tradeTime) >= 4) {
             console.log('--------------')
             let a = await redis_client.get('self_shua_read_tradeNo_' + item)
