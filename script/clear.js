@@ -9,7 +9,7 @@ async function clearSelf() {
         let time = date_util.dateFtt('yyyyMMdd', new Date());
         let tradeTime = item.tradeNo.slice(0, 8)
         if (parseInt(time) - parseInt(tradeTime) >= 4) {
-            await redis_client.del('self_shua_trans_list', item.tradeNo)
+            await redis_client.srem('self_shua_trans_list', item.tradeNo)
             await redis_client.del('self_shua_read_tradeNo_', item.tradeNo)
         }
     }
@@ -21,7 +21,7 @@ async function clearChao() {
         let time = date_util.dateFtt('yyyyMMdd', new Date());
         let tradeTime = item.tradeNo.slice(0, 8)
         if (parseInt(time) - parseInt(tradeTime) >= 4) {
-            await redis_client.del('chao_shua_trans_list', item.tradeNo)
+            await redis_client.srem('chao_shua_trans_list', item.tradeNo)
         }
     }
 }
@@ -32,7 +32,7 @@ async function clearDoumeng() {
         let time = date_util.dateFtt('yyyyMMdd', new Date());
         let tradeTime = item.tradeNo.slice(0, 8)
         if (parseInt(time) - parseInt(tradeTime) >= 4) {
-            await redis_client.del('new_shua_trans_list', item.tradeNo)
+            await redis_client.srem('new_shua_trans_list', item.tradeNo)
         }
     }
 }
@@ -43,7 +43,7 @@ async function clearIndex() {
         let time = date_util.dateFtt('yyyyMMdd', new Date());
         let tradeTime = item.tradeNo.slice(0, 8)
         if (parseInt(time) - parseInt(tradeTime) >= 4) {
-            await redis_client.del('shua_trans_list', item.tradeNo)
+            await redis_client.srem('shua_trans_list', item.tradeNo)
         }
     }
 }
@@ -65,7 +65,7 @@ async function clearOnline() {
         let time = date_util.dateFtt('yyyyMMdd', new Date());
         let tradeTime = item.tradeNo.slice(0, 8)
         if (parseInt(time) - parseInt(tradeTime) >= 4) {
-            await redis_client.del('self_shua_online_list', item.tradeNo)
+            await redis_client.srem('self_shua_online_list', item.tradeNo)
         }
     }
 }
