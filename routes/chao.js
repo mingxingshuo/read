@@ -47,8 +47,10 @@ router.get('/read', async (ctx, next) => {
 		can_reads = JSON.parse(can_reads)
 	}
 
+	let onlines = await redis_client.smembers('self_shua_online_list_4')
+
 	can_reads = _.filter(can_reads,function (read) {
-			return old_reads.indexOf(read.tradeNo) == -1
+			return onlines.indexOf(read.tradeNo) != -1 &&  old_reads.indexOf(read.tradeNo) == -1
 	})
 
 	if(can_reads.length == 0){
@@ -135,8 +137,10 @@ router.get('/link', async (ctx, next) => {
 	}else{
 		old_reads = []
 	}
+
+	let onlines = await redis_client.smembers('self_shua_online_list_4')
 	can_reads = _.filter(can_reads,function (read) {
-			return old_reads.indexOf(read.tradeNo) == -1
+			return onlines.indexOf(read.tradeNo) != -1 &&  old_reads.indexOf(read.tradeNo) == -1
 	})
 
 	await ctx.render('read/chao',{zong:can_reads.length})
