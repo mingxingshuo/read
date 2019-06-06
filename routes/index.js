@@ -9,6 +9,11 @@ const date_util = require('../util/date')
 router.get('/read', async (ctx, next) => {
 	let channel = ctx.query.channel || 'doumeng';
 	//console.log(channel)
+	
+	if(channel=='doumeng'){
+		return ctx.redirect('http://tiexie0.wang/transfer/20190523_read_2')
+	}
+
 	let can_reads = await mem.get('shua_read_trads_arr');
 	//let uid = getUid(ctx);
 
@@ -91,6 +96,7 @@ router.get('/read', async (ctx, next) => {
 	}
 
 
+
 	old_reads.push(read.tradeNo);
 	ctx.cookies.set(
             'shua_read_old_list',old_reads.join(','),{
@@ -102,6 +108,8 @@ router.get('/read', async (ctx, next) => {
                 overwrite:false  // 是否允许重写
             }
         );
+
+
 
 	ctx.redirect(read.link)
 
