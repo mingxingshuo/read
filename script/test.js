@@ -4,6 +4,7 @@ const redis_client = asyncRedis.createClient();
 async function clearSelf(time) {
     let self = await redis_client.smembers('self_shua_trans_list')
     let arr = []
+    console.log(self,'-------------------self')
     for (let item of self) {
         let tradeTime = item.slice(0, 8)
         if (parseInt(time) - parseInt(tradeTime) >= 1) {
