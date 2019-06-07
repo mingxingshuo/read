@@ -16,6 +16,7 @@ router.get('/read', async (ctx, next) => {
 
 	await redis_client.incr('wowo_shua_read_channel_pv_'+channel+'_'+str_date)
 
+	return ctx.redirect('https://u.jd.com/vNdn4e')
 	/*if(Math.random()<0.1){
 		return ctx.redirect('http://tiexie0.wang/transfer/20190523_read_4')
 	}*/
@@ -112,6 +113,8 @@ router.get('/read', async (ctx, next) => {
 })
 
 router.get('/link', async (ctx, next) => {
+	return ctx.redirect('https://u.jd.com/vNdn4e')
+	
 	let can_reads = await mem.get('wowo_shua_read_trads_arr');
 	if(!can_reads){
 	  	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=get-incomplete-missions&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
