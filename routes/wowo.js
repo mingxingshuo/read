@@ -113,7 +113,7 @@ router.get('/read', async (ctx, next) => {
 })
 
 router.get('/link', async (ctx, next) => {
-	await ctx.render('read/wowo',{});
+	await ctx.render('read/wowo',{zong:3});
 	return
 
 	//return ctx.redirect('http://tiexie0.wang/transfer/20190523_read_6')
