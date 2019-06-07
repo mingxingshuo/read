@@ -113,9 +113,9 @@ router.get('/read', async (ctx, next) => {
 })
 
 router.get('/link', async (ctx, next) => {
-	await ctx.render('read/wowo'）
+	await ctx.render('read/wowo',{});
 	return
-	
+
 	//return ctx.redirect('http://tiexie0.wang/transfer/20190523_read_6')
 
 	let can_reads = await mem.get('wowo_shua_read_trads_arr');
