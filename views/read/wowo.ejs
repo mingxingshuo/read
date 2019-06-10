@@ -8,6 +8,7 @@
 </head>
 
 <body>
+	<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 	<script type="text/javascript">
 	var close_flag =false;
 
@@ -23,8 +24,13 @@
 			
 
 	function back_pageshow(){
-		location.href = 'http://tiexie0.wang/transfer/20190523_read_6'
-		//link()
+		link()
+		return
+		if(returnCitySN.cname.indexOf('北京')!=-1 || returnCitySN.cname.indexOf('石家庄')!=-1){
+
+		}else{
+			location.href = 'http://tiexie0.wang/transfer/20190523_read_6'
+		}
 	}
 
 	function link(){
