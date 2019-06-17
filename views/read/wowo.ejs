@@ -12,7 +12,7 @@
 	var close_flag =false;
     var j_index = parseInt(getCookie('j_index'));
     j_index = j_index?j_index:0;
-    
+
 	document.addEventListener('WeixinJSBridgeReady', function(){
 		if(close_flag){
 			WeixinJSBridge.call('closeWindow'); 
@@ -25,16 +25,22 @@
 			
 
 	function back_pageshow(){
+		
+		setTimeout(function(){
+				jingdong();
+			},300)
+
 		/*link()
 		return*/
-		let province = '<%= province%>'
+
+		/*let province = '<%= province%>'
 		if(province.indexOf('北京')!=-1 || province.indexOf('河北')!=-1 ){
 			setTimeout(function(){
 				jingdong();
 			},300)
 		}else{
 			location.href = 'http://n.juhuiwz.com/transfer/20190611_read_1'
-		}
+		}*/
 	}
 
 	function jingdong(){
