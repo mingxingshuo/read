@@ -151,7 +151,7 @@ router.get('/link', async (ctx, next) => {
 	let ipObj = await rp(url)
 	ipObj = JSON.parse(ipObj)
 	let city = ipObj.content.address_detail.city
-	ctx.send({city:city})
+	ctx.body= {city:city}
 	return
 	await ctx.render('read/wowo',{city:city,zong:0})
 })
