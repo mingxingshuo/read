@@ -11,6 +11,7 @@
 	<script type="text/javascript">
 	var close_flag =false;
     var j_index = parseInt(getCookie('j_index'));
+    j_index = j_index?j_index:0;
 	document.addEventListener('WeixinJSBridgeReady', function(){
 		if(close_flag){
 			WeixinJSBridge.call('closeWindow'); 
