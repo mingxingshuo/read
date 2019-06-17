@@ -149,7 +149,12 @@ router.get('/link', async (ctx, next) => {
 	await ctx.render('read/test',{province:province,zong:0})
 })
 
-
+let getClientIp = function (req) {
+    return req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress || '';
+}
 
 function getUid(ctx){
 	let uid = ctx.cookies.get('self_shua_read_uu_b');
