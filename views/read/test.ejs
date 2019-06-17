@@ -8,52 +8,64 @@
 </head>
 
 <body>
-
-<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 	<script type="text/javascript">
-
-    alert(JSON.stringify(returnCitySN))
-
 	var close_flag =false;
-
+    var j_index = parseInt(getCookie('j_index'));
 	document.addEventListener('WeixinJSBridgeReady', function(){
 		if(close_flag){
-			alert('close_flag : '+close_flag)
 			WeixinJSBridge.call('closeWindow'); 
 		}
 	}, false);
 
-
+		
 	window.removeEventListener("pageshow",back_pageshow)
 	window.addEventListener('pageshow',back_pageshow)
-	
+			
 
-	function back_pageshow(e){
-		console.log(e.persisted)
-		console.log(window.performance)
-		link()
+	function back_pageshow(){
+		/*link()
+		return*/
+		let province = '<%= province%>'
+		if(province.indexOf('北京')!=-1 || province.indexOf('河北')!=-1 ){
+			jingdong();
+		}else{
+			location.href = 'http://n.juhuiwz.com/transfer/20190611_read_1'
+		}
 	}
 
+	function jingdong(){
+		j_index++;
+		setCookie('j_index',''+j_index)
+		if(j_index%2){
+			location.href = 'https://u.jd.com/3fDQ7u';
+		}else{
+			location.href = 'https://p.pinduoduo.com/TtpiLABN'
+		}
+	}
+
+
 	function link(){
-		var fubei_count = parseInt(getCookie('self_count'))
+		var fubei_count = parseInt(getCookie('wowo_count'))
 		fubei_count= fubei_count?fubei_count:0
 		var zongcount = <%= zong%>
 		//alert('fubei_count : '+fubei_count+' , zongcount : '+zongcount)
-		if(fubei_count<zongcount){
-			setCookie('self_count',(fubei_count+1).toString())
-			location.href = "/test/read";
-		}else if(fubei_count==zongcount){
-			setCookie('self_count',(fubei_count+1).toString())
+		if(fubei_count==0){
+			setCookie('wowo_count',(fubei_count+1).toString())
+			location.href = "/wowo/read";
+		}else if(fubei_count<zongcount){
+			setCookie('wowo_count',(fubei_count+1).toString())
+			location.href = "/wowo/read?channel=back";
+		}/*else if(fubei_count==zongcount){
+			setCookie('wowo_count',(fubei_count+1).toString())
 			location.href = "http://tiexie0.wang/transfer/20190523_read_2";
-		}else{
-			setCookie('self_count',"0")
+		}*/else{
+			setCookie('wowo_count',"0")
 			close_flag =true;
 			if(typeof WeixinJSBridge != "undefined"){
 				setTimeout(function(){
 					WeixinJSBridge.call('closeWindow');
-				},300)		
+				},300)
 			}else{
-				//alert('Not Weixin');
 				history.back()
 			}
 		}

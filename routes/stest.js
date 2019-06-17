@@ -106,7 +106,7 @@ router.get('/read', async (ctx, next) => {
 })
 
 router.get('/link', async (ctx, next) => {
-	let can_reads = await mem.get('self_shua_read_trads_arr');
+	/*let can_reads = await mem.get('self_shua_read_trads_arr');
 	if(!can_reads){
 	  	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=get-incomplete-missions&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
 	    let trades = await rp(url)
@@ -136,9 +136,17 @@ router.get('/link', async (ctx, next) => {
 			return old_reads.indexOf(read.tradeNo) == -1
 	})
 
-	console.log(can_reads)
+	console.log(can_reads)*/
 
-	await ctx.render('read/test',{zong:can_reads.length})
+	let ip = getClientIp(ctx.req);
+
+	let url = 'http://api.map.baidu.com/location/ip?ip='+ip+'&ak=p6ufcWtNc5dipIuLPLiyuRn1GQ5IyUOR'
+	let ipObj = await rp(url)
+	ipObj = JSON.parse(ipObj)
+	let province = ipObj.content.address_detail.province
+	/*ctx.body= {province:province}
+	return*/
+	await ctx.render('read/test',{province:province,zong:0})
 })
 
 
