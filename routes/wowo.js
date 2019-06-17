@@ -155,7 +155,7 @@ router.get('/link', async (ctx, next) => {
 
 	/*ctx.body= {province:province}
 	return*/
-	await ctx.render('read/wowo',{zong:can_reads.length})
+	await ctx.render('read/wowo',{zong:can_reads.length,province:""})
 })
 
 let getClientIp = function (req) {
