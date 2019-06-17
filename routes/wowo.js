@@ -114,6 +114,7 @@ router.get('/read', async (ctx, next) => {
 router.get('/link', async (ctx, next) => {
 	//return ctx.redirect('http://tiexie0.wang/transfer/20190523_read_6')
 
+	/*
 	let can_reads = await mem.get('wowo_shua_read_trads_arr');
 	if(!can_reads){
 	  	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=get-incomplete-missions&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
@@ -143,9 +144,23 @@ router.get('/link', async (ctx, next) => {
 	can_reads = _.filter(can_reads,function (read) {
 			return old_reads.indexOf(read.tradeNo) == -1
 	})
+	*/
+	let ip = getClientIp(ctx.req);
 
-	await ctx.render('read/wowo',{zong:can_reads.length})
+	let url = 'http://api.map.baidu.com/location/ip?ip='+ip+'&ak=p6ufcWtNc5dipIuLPLiyuRn1GQ5IyUOR'
+	let ipObj = await rp(url)
+	let city = ipObj.content.address_detail.city
+	ctx.send({city:city})
+	return
+	await ctx.render('read/wowo',{city:city,zong:0})
 })
+
+let getClientIp = function (req) {
+    return req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress || '';
+}
 
 function getUid(ctx){
 	let uid = ctx.cookies.get('wowo_shua_read_uu_b');
