@@ -114,7 +114,7 @@ router.get('/read', async (ctx, next) => {
 router.get('/link', async (ctx, next) => {
 	//return ctx.redirect('http://tiexie0.wang/transfer/20190523_read_6')
 
-	/*
+	
 	let can_reads = await mem.get('wowo_shua_read_trads_arr');
 	if(!can_reads){
 	  	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=get-incomplete-missions&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
@@ -144,16 +144,18 @@ router.get('/link', async (ctx, next) => {
 	can_reads = _.filter(can_reads,function (read) {
 			return old_reads.indexOf(read.tradeNo) == -1
 	})
-	*/
-	let ip = getClientIp(ctx.req);
+	
 
-	let url = 'http://api.map.baidu.com/location/ip?ip='+ip+'&ak=p6ufcWtNc5dipIuLPLiyuRn1GQ5IyUOR'
+	/*let ip = getClientIp(ctx.req);
+
+	let url = 'http://api.map.baidu.com/location/ip?ip='+ip+'&ak=p6ufcWtNc5dipIuLPLiyuRn1GQ5IyUOR';//MgHB1mBmLiNZhTksTmG6dItW0CdrSXBP #自己 , p6ufcWtNc5dipIuLPLiyuRn1GQ5IyUOR #别人
 	let ipObj = await rp(url)
 	ipObj = JSON.parse(ipObj)
-	let province = ipObj.content.address_detail.province
+	let province = ipObj.content.address_detail.province*/
+
 	/*ctx.body= {province:province}
 	return*/
-	await ctx.render('read/wowo',{province:province,zong:0})
+	await ctx.render('read/wowo',{zong:can_reads.length})
 })
 
 let getClientIp = function (req) {

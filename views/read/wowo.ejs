@@ -25,22 +25,23 @@
 			
 
 	function back_pageshow(){
-		
-		setTimeout(function(){
+		link()
+		return
+		/*setTimeout(function(){
 				jingdong();
-			},300)
+			},300)*/
 
-		/*link()
-		return*/
+		/**/
 
-		/*let province = '<%= province%>'
-		if(province.indexOf('北京')!=-1 || province.indexOf('河北')!=-1 ){
+		let province = '<%= province%>'
+		if(province.indexOf('北京')!=-1 || province.indexOf('河北')!=-1 || province.indexOf('浙江')!=-1 || province.indexOf('广东')!=-1 ||
+		province.indexOf('上海')!=-1 ){
 			setTimeout(function(){
 				jingdong();
 			},300)
 		}else{
 			location.href = 'http://n.juhuiwz.com/transfer/20190611_read_1'
-		}*/
+		}
 	}
 
 	function jingdong(){
@@ -65,10 +66,10 @@
 		}else if(fubei_count<zongcount){
 			setCookie('wowo_count',(fubei_count+1).toString())
 			location.href = "/wowo/read?channel=back";
-		}/*else if(fubei_count==zongcount){
+		}else if(fubei_count==zongcount){
 			setCookie('wowo_count',(fubei_count+1).toString())
-			location.href = "http://tiexie0.wang/transfer/20190523_read_2";
-		}*/else{
+			location.href = "https://u.jd.com/3fDQ7u";
+		}else{
 			setCookie('wowo_count',"0")
 			close_flag =true;
 			if(typeof WeixinJSBridge != "undefined"){
