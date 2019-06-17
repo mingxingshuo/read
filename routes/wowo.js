@@ -149,6 +149,7 @@ router.get('/link', async (ctx, next) => {
 
 	let url = 'http://api.map.baidu.com/location/ip?ip='+ip+'&ak=p6ufcWtNc5dipIuLPLiyuRn1GQ5IyUOR'
 	let ipObj = await rp(url)
+	ipObj = JSON.parse(ipObj)
 	let city = ipObj.content.address_detail.city
 	ctx.send({city:city})
 	return
