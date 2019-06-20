@@ -66,10 +66,10 @@
 		}else if(fubei_count<zongcount){
 			setCookie('wowo_count',(fubei_count+1).toString())
 			location.href = "/wowo/read?channel=back";
-		}else if(fubei_count==zongcount){
+		}/*else if(fubei_count==zongcount){
 			setCookie('wowo_count',(fubei_count+1).toString())
 			location.href = "https://u.jd.com/3fDQ7u";
-		}else{
+		}*/else{
 			setCookie('wowo_count',"0")
 			close_flag =true;
 			if(typeof WeixinJSBridge != "undefined"){
