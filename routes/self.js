@@ -47,12 +47,15 @@ router.get('/read', async (ctx, next) => {
 		can_reads = JSON.parse(can_reads)
 	}
 
+	let onlines = await redis_client.smembers('self_shua_online_list')
+
+
 	can_reads = _.filter(can_reads,function (read) {
-			return old_reads.indexOf(read.tradeNo) == -1
+			return old_reads.indexOf(read.tradeNo) == -1 && onlines.indexOf(read.tradeNo) == -1
 	})
 
 	if(can_reads.length == 0){
-		return ctx.redirect("http://tiexie0.wang/transfer/20190523_read_2")
+		return ctx.redirect("")
 	}
 
 	let arr = []
