@@ -68,8 +68,8 @@ async function updateCancel(read){
 	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=ack-mission-revoking&tradeNo='+
 	read.tradeNo+'&completes='+amount+'&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
 	//let body = await rp(url)
-	//console.log(read)
-	//console.log(body)
+	console.log(read)
+	console.log(body)
 }
 
 
