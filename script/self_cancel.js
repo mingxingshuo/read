@@ -40,9 +40,9 @@ async function updateTrade(read){
 	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=update-mission&tradeNo='+
 	read.tradeNo+'&completes='+amount+'&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
 	let body = await rp(url)
-	//console.log('-------updateTrade  script---------')
-	//console.log(read)
-	//console.log(body)
+	console.log('-------updateTrade  script---------')
+	console.log(read)
+	console.log(body)
 }
 
 
