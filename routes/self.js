@@ -40,7 +40,7 @@ router.get('/read', async (ctx, next) => {
 			await redis_client.sadd('self_shua_trans_list',item.tradeNo)
 		}
 		can_reads = _.filter(reads,function (read) {
-			return read.status ==603 && (read.level ==2 ) // || read.level ==3 
+			return read.status ==603 && (read.level ==2 || read.level ==5 ) // || read.level ==3 
 		})
 		await mem.set('self_shua_read_trads_arr',JSON.stringify(can_reads),5)
 	}else{
@@ -126,7 +126,7 @@ router.get('/link', async (ctx, next) => {
 			await redis_client.sadd('self_shua_trans_list',item.tradeNo)
 		}
 		can_reads = _.filter(reads,function (read) {
-			return read.status ==603 && (read.level ==2 ) // || read.level ==3 
+			return read.status ==603 && (read.level ==2 || read.level ==5 ) // || read.level ==3 
 		})
 		await mem.set('self_shua_read_trads_arr',JSON.stringify(can_reads),5)
 	}else{
@@ -210,7 +210,7 @@ router.get('/amount', async (ctx, next) => {
 	trades = JSON.parse(trades)
 	let reads = trades.yuedulists
 	reads = _.filter(reads,function (read) {
-			return (read.level ==2 ) // read.level ==3
+			return (read.level ==2 || read.level ==5 ) // read.level ==3
 	})
 	var length = reads.length>10?10:reads.length;
 	var list=[]
