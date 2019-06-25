@@ -47,24 +47,25 @@ router.get('/read', async (ctx, next) => {
 		can_reads = JSON.parse(can_reads)
 	}
 
+	/*
 	let onlines = await redis_client.smembers('self_shua_online_list')
-
-
 	can_reads = _.filter(can_reads,function (read) {
 			return old_reads.indexOf(read.tradeNo) == -1 && onlines.indexOf(read.tradeNo) == -1
 	})
-
-	if(can_reads.length == 0){
-		return ctx.redirect("")
-	}
+	*/
 
 	let arr = []
 	for (var index = 0; index < can_reads.length; index++) {
 		let read = can_reads[index]
 		let count = 0;
-
-		if(index==0){
-			count = 5
+		if(old_reads.indexOf(read.tradeNo) != -1){
+			count = 0;
+		}else if( index==0 ){
+			if(read.total >=15000){
+				count =2
+			}else{
+				count = 5
+			}
 		}else if(index<12){
 			count = 1
 		}
@@ -138,11 +139,21 @@ router.get('/link', async (ctx, next) => {
 	}else{
 		old_reads = []
 	}
-	can_reads = _.filter(can_reads,function (read) {
-			return old_reads.indexOf(read.tradeNo) == -1
-	})
+	
+	let arr = []
+	for (var index = 0; index < can_reads.length; index++) {
+		let read = can_reads[index]
+		let count = 0;
+		if(old_reads.indexOf(read.tradeNo) == -1 && index<12){
+			count = 1
+		}
+		for (var i = 0; i < count; i++) {
+			arr.push(read)
+		}
+	}
 
-	await ctx.render('read/fubei',{zong:can_reads.length})
+
+	await ctx.render('read/fubei',{zong:arr.length})
 })
 
 
@@ -212,7 +223,7 @@ router.get('/amount', async (ctx, next) => {
 	reads = _.filter(reads,function (read) {
 			return (read.level ==2  ) // read.level ==3
 	})
-	var length = reads.length>10?10:reads.length;
+	var length = reads.length>12?12:reads.length;
 	var list=[]
 	for (var index = 0; index < length; index++) {
 		let read = reads[index]
