@@ -55,7 +55,7 @@ router.get('/read', async (ctx, next) => {
 	})
 
 	if(can_reads.length == 0){
-		return ctx.redirect("https://u.jd.com/3fDQ7u")
+		return ctx.redirect("")
 	}
 
 	let arr = []
