@@ -21,8 +21,7 @@
 	window.addEventListener('pageshow',back_pageshow)
 
 	function back_pageshow(){
-		location.href = 'http://tiexie0.wang/transfer/20190523_read_2'
-		//link()
+		link()
 	}
 
 	function link(){
@@ -36,10 +35,10 @@
 		}else if(fubei_count<zongcount){
 			setCookie('doumeng_count',(fubei_count+1).toString())
 			location.href = "/read?channel=back";
-		}else if(fubei_count==zongcount){
+		}/*else if(fubei_count==zongcount){
 			setCookie('doumeng_count',(fubei_count+1).toString())
 			location.href = "http://tiexie0.wang/transfer/20190523_read_2";
-		}else{
+		}*/else{
 			setCookie('doumeng_count',"0")
 			close_flag =true;
 			if(typeof WeixinJSBridge != "undefined"){
