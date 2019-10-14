@@ -21,7 +21,9 @@
 	window.addEventListener('pageshow',back_pageshow)
 
 	function back_pageshow(){
-		link()
+		setTimeout(function(){
+			link()
+		},500)
 	}
 
 	function link(){
