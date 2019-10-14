@@ -116,8 +116,8 @@ router.get('/read', async (ctx, next) => {
 
 router.get('/link', async (ctx, next) => {
 
-	await ctx.render('read/doumeng',{zong:3});
-	return
+	/*await ctx.render('read/doumeng',{zong:3});
+	return*/
 	//return ctx.redirect('http://tiexie0.wang/transfer/20190523_read_2')
 
 	let can_reads = await mem.get('shua_read_trads_arr');
