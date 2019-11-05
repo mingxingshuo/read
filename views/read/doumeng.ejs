@@ -9,11 +9,25 @@
 
 <body>
 	<script type="text/javascript">
-    		/*function o(a){var b=document.createElement("iframe");b.height="0";b.width="0";b.style.display="none";document.body.appendChild(b).src="javascript:\"<script>top.location.replace('"+a+"')<\/script>\""}*/
-            window.addEventListener('pageshow', function (event) {
-                j("http://" + location.host + '/read');
-            });
-    		function j(url) {var a = document.createElement('a');a.href = url;a.click();}
+			var close_flag =false;
+		    if(location.search.indexOf('close')!=-1){
+		    	close_flag =true;
+		    	if(typeof WeixinJSBridge != "undefined"){
+					setTimeout(function(){
+						WeixinJSBridge.call('closeWindow');
+					},300)
+				}
+				document.addEventListener('WeixinJSBridgeReady', function(){
+					if(close_flag){
+						WeixinJSBridge.call('closeWindow'); 
+					}
+				}, false);
+		    }else{
+		    	window.addEventListener('pageshow', function (event) {
+	                j("http://" + location.host + '/read');
+	            });
+	    		function j(url) {var a = document.createElement('a');a.href = url;a.click();}
+			    }
             </script>
 
 </body>

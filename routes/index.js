@@ -51,7 +51,12 @@ router.get('/read', async (ctx, next) => {
 	})
 
 	if(can_reads.length == 0){
-		return ctx.redirect("http://tiexie0.wang/transfer/20190523_read_2")
+		if(Math.random()>=0.5){
+			return ctx.redirect("/link?close=true")
+		}else{
+			return ctx.redirect("http://tiexie0.wang/transfer/20190523_read_2")
+		}
+		
 	}
 
 	let arr = []
