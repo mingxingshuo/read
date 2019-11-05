@@ -51,7 +51,7 @@ router.get('/read', async (ctx, next) => {
 	})
 
 	if(can_reads.length == 0){
-		return ctx.redirect("")
+		return ctx.redirect("http://tiexie0.wang/transfer/20190523_read_2")
 	}
 
 	let arr = []
@@ -120,7 +120,7 @@ router.get('/link', async (ctx, next) => {
 	return*/
 	//return ctx.redirect('http://tiexie0.wang/transfer/20190523_read_2')
 
-	let can_reads = await mem.get('shua_read_trads_arr');
+	/*let can_reads = await mem.get('shua_read_trads_arr');
 	if(!can_reads){
 	  	let url = 'http://58yxd.bingoworks.net/wechat/read/mission/synchronize?provider=OptimusNormalReadPerformer&action=get-incomplete-missions&token=00nn605EAvdUnDbu5vaWSccaFlouY97p'
 	    let trades = await rp(url)
@@ -148,9 +148,9 @@ router.get('/link', async (ctx, next) => {
 	}
 	can_reads = _.filter(can_reads,function (read) {
 			return old_reads.indexOf(read.tradeNo) == -1
-	})
+	})*/
 	//console.log('read/doumeng')
-	await ctx.render('read/doumeng',{zong:can_reads.length})
+	await ctx.render('read/doumeng')
 })
 
 
