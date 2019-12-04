@@ -7,15 +7,11 @@ const _ = require('underscore')
 const date_util = require('../util/date')
 
 router.get('/read', async (ctx, next) => {
-	let channel = ctx.query.channel || 'doumeng';
-	//console.log(channel)
-
+	let channel = ctx.query.channel || 'test';
 	let can_reads = await mem.get('shua_read_trads_arr');
 	//let uid = getUid(ctx);
 
 	let str_date = date_util.dateFtt('yyyyMMdd',new Date());
-	await redis_client.incr('shua_read_channel_pv_'+channel+'_'+str_date)
-
 	let old_reads = ctx.cookies.get('shua_read_old_list');
 	if(old_reads){
 		old_reads = old_reads.split(',')	
@@ -46,17 +42,27 @@ router.get('/read', async (ctx, next) => {
 		can_reads = JSON.parse(can_reads)
 	}
 
-	can_reads = _.filter(can_reads,function (read) {
+	let only_reads = _.filter(can_reads,function (read) {
 		return old_reads.indexOf(read.tradeNo)==-1
 	})
 
-	if(can_reads.length == 0){
-		return ctx.redirect("/link?close=true")
+	if(only_reads.length == 0){
+		if(!can_reads.length){
+			return ctx.redirect("/link?close=true")
+		}else{
+			only_reads = can_reads
+		}
+	}
+
+	if(old_reads.length){
+		await redis_client.incr('shua_read_channel_pv_'+channel+'_back_'+str_date)
+	}else{
+		await redis_client.incr('shua_read_channel_pv_'+channel+'_'+str_date)
 	}
 
 	let arr = []
-	for (var index = 0; index < can_reads.length; index++) {
-		let read = can_reads[index]
+	for (var index = 0; index < only_reads.length; index++) {
+		let read = only_reads[index]
 		
 		let count = 0;
 
@@ -98,16 +104,16 @@ router.get('/read', async (ctx, next) => {
             'shua_read_old_list',old_reads.join(','),{
                 domain: ctx.hostname,
                 path:'/',       // 写cookie所在的路径
-                maxAge: 5*60*1000,   // cookie有效时长
-                expires:new Date(Date.now()+5*60*1000), // cookie失效时间
+                maxAge: 60*1000,   // cookie有效时长
+                expires:new Date(Date.now()+60*1000), // cookie失效时间
                 httpOnly:false,  // 是否只用于http请求中获取
                 overwrite:false  // 是否允许重写
             }
         );
+	
 
 
-
-	ctx.redirect(read.link)
+	return ctx.redirect(read.link)
 
     /*await ctx.render('index', {
     title: 'Hello Koa 2!'
